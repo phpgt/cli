@@ -1,0 +1,35 @@
+{
+	"name": "phpgt/cli",
+	"description": "Command line interface for common tasks.",
+	"keywords": [
+		"phpgt",
+		"webengine",
+		"cli",
+		"server",
+		"build",
+		"taskrunner"
+	],
+
+	"license": "MIT",
+
+	"authors": [
+		{
+			"name": "Greg Bowler",
+			"email": "greg.bowler@g105b.com"
+		}
+	],
+
+	"autoload": {
+		"psr-4": {
+			"Gt\\Cli\\": "./src"
+		}
+	},
+
+	"require": {
+
+	},
+
+	"bin": [
+		"gt"
+	]
+}

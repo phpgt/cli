@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+use Gt\Cli\App;
+
+$autoloadLocations = [];
+$autoloadLocations []= implode(DIRECTORY_SEPARATOR, [
+	__DIR__,
+	"..",
+	"..",
+	"autoload.php",
+]);
+$autoloadLocations []= implode(DIRECTORY_SEPARATOR, [
+	__DIR__,
+	"vendor",
+	"autoload.php",
+]);
+
+foreach($autoloadLocations as $location) {
+	if(is_file($location)) {
+		require($location);
+	}
+}
+
+$app = new App();
+$app->run();
