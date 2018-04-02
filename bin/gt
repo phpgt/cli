@@ -8,10 +8,12 @@ $autoloadLocations []= implode(DIRECTORY_SEPARATOR, [
 	__DIR__,
 	"..",
 	"..",
+	"..",
 	"autoload.php",
 ]);
 $autoloadLocations []= implode(DIRECTORY_SEPARATOR, [
 	__DIR__,
+	"..",
 	"vendor",
 	"autoload.php",
 ]);
