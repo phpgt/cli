@@ -1,18 +1,20 @@
 <?php
-namespace Gt\Cli;
+
+namespace Gt\Cli\Command;
 
 use Gt\Cli\Argument\Argument;
+use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Argument\CommandArgument;
 use Gt\Cli\Argument\NamedArgument;
-use Gt\Installer\Argument\ArgumentList;
-use Gt\Cli\Argument\ArgumentValueList;
-use Gt\Cli\Parameter\Parameter;
-use Gt\Cli\Parameter\NamedParameter;
 use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\MissingRequiredParameterValueException;
+use Gt\Cli\Parameter\NamedParameter;
+use Gt\Cli\Parameter\Parameter;
+use Gt\Cli\Stream;
+use Gt\Installer\Argument\ArgumentList;
 
-abstract class CliCommand {
+abstract class Command {
 	/** @var Stream */
 	protected $stream;
 
@@ -169,7 +171,7 @@ abstract class CliCommand {
 			if($argument instanceof NamedArgument) {
 				/** @var NamedParameter $parameter */
 				$parameter = $namedParameterList[
-				$namedParameterIndex
+					$namedParameterIndex
 				];
 
 				$argumentValueList->set(

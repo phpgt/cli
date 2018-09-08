@@ -1,6 +1,12 @@
 <?php
 namespace Gt\Cli;
 
+use Gt\Cli\Argument\NotEnoughArgumentsException;
+use Gt\Cli\Command\Command;
+use Gt\Cli\Command\HelpCommand;
+use Gt\Cli\Command\InvalidCommandException;
+use Gt\Cli\Parameter\MissingRequiredParameterException;
+use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Installer\Argument\ArgumentList;
 
 class Application {
