@@ -18,10 +18,10 @@ class Stream {
 	protected $currentStream;
 
 	public function __construct(string $in, string $out, string $error) {
-		$this->setStreams($in, $out, $error);
+		$this->setStream($in, $out, $error);
 	}
 
-	public function setStreams(string $in, string $out, string $error) {
+	public function setStream(string $in, string $out, string $error) {
 		$this->in = new SplFileObject(
 			$in,
 			"r"

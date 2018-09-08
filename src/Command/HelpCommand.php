@@ -26,6 +26,13 @@ class HelpCommand extends Command {
 		$this->stream->writeLine($this->applicationName);
 		$this->stream->writeLine();
 
+		if(empty($this->applicationCommandList)) {
+			$this->stream->writeLine(
+				"There are no commands available"
+			);
+			return;
+		}
+
 		$this->stream->writeLine("Available commands:");
 
 		foreach($this->applicationCommandList as $command) {

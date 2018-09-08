@@ -29,15 +29,15 @@ class Application {
 			$this->commands
 		);
 
-		$this->streams = new Stream(
+		$this->stream = new Stream(
 			"php://stdin",
 			"php://stdout",
 			"php://stderr"
 		);
 	}
 
-	public function setStreams($in, $out, $error) {
-		$this->streams->setStreams($in, $out, $error);
+	public function setStream($in, $out, $error) {
+		$this->stream->setStream($in, $out, $error);
 	}
 
 	public function run():void {
@@ -50,11 +50,11 @@ class Application {
 			$command->checkArguments($this->arguments);
 		}
 		catch(NotEnoughArgumentsException $exception) {
-			$this->streams->writeLine(
+			$this->stream->writeLine(
 				"Not enough arguments passed.",
 				Stream::ERROR
 			);
-			$this->streams->writeLine(
+			$this->stream->writeLine(
 				$command->getUsage(),
 				Stream::ERROR
 			);
