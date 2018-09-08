@@ -3,6 +3,7 @@
 namespace Gt\Cli\Command;
 
 use Gt\Cli\Argument\Argument;
+use Gt\Cli\Argument\ArgumentList;
 use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Argument\CommandArgument;
 use Gt\Cli\Argument\NamedArgument;
@@ -12,7 +13,6 @@ use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Parameter\NamedParameter;
 use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Stream;
-use Gt\Installer\Argument\ArgumentList;
 
 abstract class Command {
 	/** @var Stream */

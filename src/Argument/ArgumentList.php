@@ -1,11 +1,6 @@
 <?php
-namespace Gt\Installer\Argument;
+namespace Gt\Cli\Argument;
 
-use Gt\Cli\Argument\Argument;
-use Gt\Cli\Argument\CommandArgument;
-use Gt\Cli\Argument\LongOptionArgument;
-use Gt\Cli\Argument\NamedArgument;
-use Gt\Cli\Argument\ShortOptionArgument;
 use Gt\Cli\Parameter\Parameter;
 use Iterator;
 

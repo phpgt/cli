@@ -7,7 +7,7 @@ use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Command\InvalidCommandException;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\MissingRequiredParameterValueException;
-use Gt\Installer\Argument\ArgumentList;
+use Gt\Cli\Argument\ArgumentList;
 
 class Application {
 	protected $applicationName;
