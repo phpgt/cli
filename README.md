@@ -29,6 +29,7 @@ CLI interaction:
 $ twitter tweet --message "Sending a test Tweet from the terminal."
 Sent! View online: https://twitter.com/g105b/status/1038509073346510849
 $ twitter dm --to @g105b --message "Hello, Greg!"
+Sent!
 $ twitter help
 Twitter example application
 
