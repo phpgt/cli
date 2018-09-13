@@ -42,66 +42,23 @@ class Application {
 	}
 
 	public function run():void {
+		$command = null;
+
 		try {
 			$commandName = $this->arguments->getCommandName();
 			$command = $this->findCommandByName($commandName);
 			$command->setStream($this->stream);
-		}
-		catch(InvalidCommandException $exception) {
-			$this->stream->writeLine(
-				$exception->getMessage(),
-				Stream::ERROR
+
+			$argumentValueList = $command->getArgumentValueList(
+				$this->arguments
 			);
 
-			exit(ErrorCode::get($exception));
-		}
-
-		$argumentValueList = $command->getArgumentValueList($this->arguments);
-
-		try {
-			$command->checkArguments($this->arguments);
-		}
-		catch(NotEnoughArgumentsException $exception) {
-			$this->stream->writeLine(
-				$exception->getMessage(),
-				Stream::ERROR
+			$command->checkArguments(
+				$this->arguments
 			);
-			$this->stream->writeLine(
-				$command->getUsage(),
-				Stream::ERROR
-			);
-
-			exit(ErrorCode::get($exception));
-		}
-		catch(MissingRequiredParameterException $exception) {
-			$this->stream->writeLine(
-				$exception->getMessage(),
-				Stream::ERROR
-			);
-			$this->stream->writeLine(
-				$command->getUsage(),
-				Stream::ERROR
-			);
-
-			exit(ErrorCode::get($exception));
-		}
-		catch(MissingRequiredParameterValueException $exception) {
-			$this->stream->writeLine(
-				$exception->getMessage(),
-				Stream::ERROR
-			);
-			$this->stream->writeLine(
-				$command->getUsage(),
-				Stream::ERROR
-			);
-
-			exit(ErrorCode::get($exception));
-		}
-
-		try {
 			$command->run($argumentValueList);
 		}
-		catch(CommandException $exception) {
+		catch(CliException $exception) {
 			$this->stream->writeLine(
 				$exception->getMessage(),
 				Stream::ERROR
