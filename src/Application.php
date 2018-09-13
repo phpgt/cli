@@ -3,6 +3,7 @@ namespace Gt\Cli;
 
 use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\Command\Command;
+use Gt\Cli\Command\CommandException;
 use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Command\InvalidCommandException;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
@@ -14,6 +15,8 @@ class Application {
 	protected $arguments;
 	protected $commands;
 	protected $stream;
+
+	protected $exitCode = 0;
 
 	public function __construct(
 		string $applicationName,
@@ -36,6 +39,10 @@ class Application {
 		);
 	}
 
+	public function __destruct() {
+		exit($this->exitCode);
+	}
+
 	public function setStream($in, $out, $error) {
 		$this->stream->setStream($in, $out, $error);
 	}
@@ -51,13 +58,16 @@ class Application {
 		}
 		catch(NotEnoughArgumentsException $exception) {
 			$this->stream->writeLine(
-				"Not enough arguments passed.",
+				"Not enough arguments passed. "
+				. $exception->getMessage(),
 				Stream::ERROR
 			);
 			$this->stream->writeLine(
 				$command->getUsage(),
 				Stream::ERROR
 			);
+
+			exit(ErrorCode::get($exception));
 		}
 		catch(MissingRequiredParameterException $exception) {
 
@@ -66,7 +76,16 @@ class Application {
 
 		}
 
-		$command->run($argumentValueList);
+		try {
+			$command->run($argumentValueList);
+		}
+		catch(CommandException $exception) {
+			$this->stream->writeLine(
+				$exception->getMessage(),
+				Stream::ERROR
+			);
+			$this->exitCode = 1;
+		}
 	}
 
 	protected function findCommandByName(string $name):Command {

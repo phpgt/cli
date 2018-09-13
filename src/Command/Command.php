@@ -65,7 +65,10 @@ abstract class Command {
 		}
 
 		if($passedNamedArguments < $numRequiredNamedParameters) {
-			throw new NotEnoughArgumentsException();
+			throw new NotEnoughArgumentsException(
+				"Passed: $passedNamedArguments "
+				. "required: $numRequiredNamedParameters"
+			);
 		}
 
 		foreach($this->requiredParameterList as $parameter) {
