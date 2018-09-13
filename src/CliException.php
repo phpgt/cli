@@ -8,7 +8,7 @@ class CliException extends RuntimeException {
 		$code = ErrorCode::get(get_class($this));
 
 		parent::__construct(
-			$message,
+			"Error: " . $message,
 			$code
 		);
 	}
