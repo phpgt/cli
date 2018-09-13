@@ -10,6 +10,15 @@ abstract class Argument {
 		$this->value = $value;
 	}
 
+	public function __toString():string {
+		if(empty($key)) {
+			return $this->value;
+		}
+		else {
+			return $this->key . ":" . $this->value;
+		}
+	}
+
 	abstract protected function processRawKey(string $rawKey):string;
 
 	public function getKey():string {
