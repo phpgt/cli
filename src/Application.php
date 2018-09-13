@@ -16,8 +16,6 @@ class Application {
 	protected $commands;
 	protected $stream;
 
-	protected $exitCode = 0;
-
 	public function __construct(
 		string $applicationName,
 		ArgumentList $arguments,
@@ -39,18 +37,25 @@ class Application {
 		);
 	}
 
-	public function __destruct() {
-		exit($this->exitCode);
-	}
-
 	public function setStream($in, $out, $error) {
 		$this->stream->setStream($in, $out, $error);
 	}
 
 	public function run():void {
-		$commandName = $this->arguments->getCommandName();
-		$command = $this->findCommandByName($commandName);
-		$command->setStream($this->stream);
+		try {
+			$commandName = $this->arguments->getCommandName();
+			$command = $this->findCommandByName($commandName);
+			$command->setStream($this->stream);
+		}
+		catch(InvalidCommandException $exception) {
+			$this->stream->writeLine(
+				$exception->getMessage(),
+				Stream::ERROR
+			);
+
+			exit(ErrorCode::get($exception));
+		}
+
 		$argumentValueList = $command->getArgumentValueList($this->arguments);
 
 		try {
@@ -58,8 +63,7 @@ class Application {
 		}
 		catch(NotEnoughArgumentsException $exception) {
 			$this->stream->writeLine(
-				"Not enough arguments passed. "
-				. $exception->getMessage(),
+				$exception->getMessage(),
 				Stream::ERROR
 			);
 			$this->stream->writeLine(
@@ -70,10 +74,28 @@ class Application {
 			exit(ErrorCode::get($exception));
 		}
 		catch(MissingRequiredParameterException $exception) {
+			$this->stream->writeLine(
+				$exception->getMessage(),
+				Stream::ERROR
+			);
+			$this->stream->writeLine(
+				$command->getUsage(),
+				Stream::ERROR
+			);
 
+			exit(ErrorCode::get($exception));
 		}
 		catch(MissingRequiredParameterValueException $exception) {
+			$this->stream->writeLine(
+				$exception->getMessage(),
+				Stream::ERROR
+			);
+			$this->stream->writeLine(
+				$command->getUsage(),
+				Stream::ERROR
+			);
 
+			exit(ErrorCode::get($exception));
 		}
 
 		try {
@@ -84,7 +106,12 @@ class Application {
 				$exception->getMessage(),
 				Stream::ERROR
 			);
-			$this->exitCode = 1;
+			$this->stream->writeLine(
+				$command->getUsage(),
+				Stream::ERROR
+			);
+
+			exit(ErrorCode::get($exception));
 		}
 	}
 
