@@ -183,11 +183,10 @@ abstract class Command {
 				);
 				$namedParameterIndex++;
 			}
-
-			if($argument instanceof Argument) {
+			elseif($argument instanceof Argument) {
 				/** @var Parameter $parameter */
 				$parameter = $parameterList[
-				$parameterIndex
+					$parameterIndex
 				];
 
 				$argumentValueList->set(
