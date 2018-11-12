@@ -1,5 +1,4 @@
 <?php
-
 namespace Gt\Cli\Test;
 
 use Gt\Cli\Argument\ShortOptionArgument;
