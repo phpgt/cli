@@ -1,5 +1,4 @@
 <?php
-
 namespace Gt\Cli\Command;
 
 use Gt\Cli\Argument\Argument;
