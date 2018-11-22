@@ -11,7 +11,7 @@ abstract class Argument {
 	}
 
 	public function __toString():string {
-		if(empty($key)) {
+		if(empty($this->key)) {
 			return $this->value;
 		}
 		else {
