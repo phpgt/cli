@@ -11,7 +11,10 @@ class ArgumentListTest extends TestCase {
 			array_shift($args),
 			...$args
 		);
-
+		self::assertEquals(
+			$args[0],
+			$argumentList->getCommandName()
+		);
 	}
 
 	public function data_randomArgs():array {
