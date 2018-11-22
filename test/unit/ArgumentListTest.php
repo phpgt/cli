@@ -39,6 +39,42 @@ class ArgumentListTest extends TestCase {
 		}
 	}
 
+	/** @dataProvider data_randomLongArgs */
+	public function testIteratorWithLongArgs(string...$args) {
+		$argumentList = new ArgumentList(
+			array_shift($args),
+			...$args
+		);
+
+		foreach($argumentList as $i => $argument) {
+			/** @var Argument $argument */
+			self::assertInstanceOf(
+				Argument::class,
+				$argument
+			);
+
+			if($i === 0) {
+				self::assertEquals(
+					$args[0],
+					$argument
+				);
+				continue;
+			}
+
+			$originalKey = $args[($i - 1) * 2 + 1];
+			$originalValue = $args[($i - 1) * 2 + 2];
+
+			self::assertEquals(
+				substr($originalKey, 2),
+				$argument->getKey()
+			);
+			self::assertEquals(
+				$originalValue,
+				$argument->getValue()
+			);
+		}
+	}
+
 	public function data_randomNamedArgs():array {
 		$dataSet = [];
 
