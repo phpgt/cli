@@ -1,10 +1,18 @@
 <?php
 namespace Gt\Cli\Test;
 
+use Gt\Cli\Argument\NamedArgument;
 use Gt\Cli\Argument\ShortOptionArgument;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentTest extends TestCase {
+	public function testToString() {
+		$value = uniqid();
+		$arg = new NamedArgument($value);
+
+		self::assertEquals($value, (string)$arg);
+	}
+
 	public function testShortOption() {
 		$value = uniqid();
 		$arg = new ShortOptionArgument("-d", $value);
