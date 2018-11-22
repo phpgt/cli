@@ -191,7 +191,7 @@ class ArgumentListTest extends TestCase {
 		}
 	}
 
-	/** @dataProvider data_randomEqualsArgs */
+	/** @dataProvider data_randomLongEqualsArgs */
 	public function testKeyValueSetWithLongOptionEqualsSign(string...$args) {
 		$argumentList = new ArgumentList(
 			array_shift($args),
@@ -236,11 +236,71 @@ class ArgumentListTest extends TestCase {
 			$param->method("getShortOption")
 				->willReturn($key);
 
+			$paramValue = $argumentList->getValueForParameter($param);
+
+			if($paramValue != $value) {
+
+				var_dump($args);die();
+			}
+
 			self::assertEquals(
 				$value,
-				$argumentList->getValueForParameter($param)
+				$paramValue
 			);
 		}
+	}
+
+	/** @dataProvider data_randomShortEqualsArgs */
+	public function testGetValueForParameterNotExists(string...$args) {
+		$argumentList = new ArgumentList(
+			array_shift($args),
+			...$args
+		);
+
+		foreach($args as $i => $arg) {
+			if($i === 0) {
+				continue;
+			}
+
+			$arg = substr($arg, 1);
+			list($key, $value) = explode("=", $arg);
+
+			$param = self::createMock(Parameter::class);
+			$param->method("getShortOption")
+				->willReturn("Z");
+
+			self::assertNull($argumentList->getValueForParameter($param));
+		}
+	}
+
+	/** @dataProvider data_randomLongArgs */
+	public function testGetValueForParameterWithLongOption(string...$args) {
+		$argumentList = new ArgumentList(
+			array_Shift($args),
+			...$args
+		);
+
+		$param = self::createMock(Parameter::class);
+		$param->method("getLongOption")
+			->willReturn(substr($args[1], 2));
+		$value = $argumentList->getValueForParameter($param);
+
+		self::assertEquals($args[2], $value);
+	}
+
+	/** @dataProvider data_randomShortArgs */
+	public function testGetValueParameterWithShortOption(string...$args) {
+		$argumentList = new ArgumentList(
+			array_shift($args),
+			...$args
+		);
+
+		$param = self::createMock(Parameter::class);
+		$param->method("getShortOption")
+			->willReturn(substr($args[1], 1));
+		$value = $argumentList->getValueForParameter($param);
+
+		self::assertEquals($args[2], $value);
 	}
 
 	public function data_randomNamedArgs():array {
@@ -313,7 +373,7 @@ class ArgumentListTest extends TestCase {
 		return $dataSet;
 	}
 
-	public function data_randomEqualsArgs():array {
+	public function data_randomLongEqualsArgs():array {
 		$dataSet = [];
 
 		for($i = 0; $i < 10; $i++) {
@@ -337,6 +397,7 @@ class ArgumentListTest extends TestCase {
 		$dataSet = [];
 
 		for($i = 0; $i < 10; $i++) {
+			$charArray = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
 			$params = [];
 
 			$params []= uniqid("script-");
@@ -344,11 +405,10 @@ class ArgumentListTest extends TestCase {
 
 			$numParams = rand(1, 10);
 			for($j = 0; $j < $numParams; $j++) {
+				$char = array_shift($charArray);
+
 				$params []= "-"
-					. substr(
-						md5(microtime()),
-						rand(0,26),
-						1)
+					. $char
 					. "="
 					. uniqid();
 			}
