@@ -4,6 +4,7 @@ namespace Gt\Cli\Test;
 use Gt\Cli\Argument\Argument;
 use Gt\Cli\Argument\ArgumentList;
 use Gt\Cli\Parameter\Parameter;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentListTest extends TestCase {
@@ -190,6 +191,58 @@ class ArgumentListTest extends TestCase {
 		}
 	}
 
+	/** @dataProvider data_randomEqualsArgs */
+	public function testKeyValueSetWithLongOptionEqualsSign(string...$args) {
+		$argumentList = new ArgumentList(
+			array_shift($args),
+			...$args
+		);
+
+		foreach($args as $i => $arg) {
+			if($i === 0) {
+				continue;
+			}
+
+			$arg = substr($arg, 2);
+			list($key, $value) = explode("=", $arg);
+
+			$param = self::createMock(Parameter::class);
+			$param->method("getLongOption")
+				->willReturn($key);
+
+			self::assertEquals(
+				$value,
+				$argumentList->getValueForParameter($param)
+			);
+		}
+	}
+
+	/** @dataProvider data_randomShortEqualsArgs */
+	public function testKeyValueSetWithShortOptionEqualsSign(string...$args) {
+		$argumentList = new ArgumentList(
+			array_shift($args),
+			...$args
+		);
+
+		foreach($args as $i => $arg) {
+			if($i === 0) {
+				continue;
+			}
+
+			$arg = substr($arg, 1);
+			list($key, $value) = explode("=", $arg);
+
+			$param = self::createMock(Parameter::class);
+			$param->method("getShortOption")
+				->willReturn($key);
+
+			self::assertEquals(
+				$value,
+				$argumentList->getValueForParameter($param)
+			);
+		}
+	}
+
 	public function data_randomNamedArgs():array {
 		$dataSet = [];
 
@@ -252,6 +305,52 @@ class ArgumentListTest extends TestCase {
 				else {
 					$params []= uniqid();
 				}
+			}
+
+			$dataSet []= $params;
+		}
+
+		return $dataSet;
+	}
+
+	public function data_randomEqualsArgs():array {
+		$dataSet = [];
+
+		for($i = 0; $i < 10; $i++) {
+			$params = [];
+
+			$params []= uniqid("script-");
+			$params []= uniqid("command-");
+
+			$numParams = rand(1, 10);
+			for($j = 0; $j < $numParams; $j++) {
+				$params []= "--" . uniqid() . "=" . uniqid();
+			}
+
+			$dataSet []= $params;
+		}
+
+		return $dataSet;
+	}
+
+	public function data_randomShortEqualsArgs():array {
+		$dataSet = [];
+
+		for($i = 0; $i < 10; $i++) {
+			$params = [];
+
+			$params []= uniqid("script-");
+			$params []= uniqid("command-");
+
+			$numParams = rand(1, 10);
+			for($j = 0; $j < $numParams; $j++) {
+				$params []= "-"
+					. substr(
+						md5(microtime()),
+						rand(0,26),
+						1)
+					. "="
+					. uniqid();
 			}
 
 			$dataSet []= $params;
