@@ -47,7 +47,7 @@ class Application {
 		try {
 			$commandName = $this->arguments->getCommandName();
 			$command = $this->findCommandByName($commandName);
-			$command->setStream($this->stream);
+			$command->setOutput($this->stream);
 
 			$argumentValueList = $command->getArgumentValueList(
 				$this->arguments

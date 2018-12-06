@@ -15,7 +15,7 @@ use Gt\Cli\Stream;
 
 abstract class Command {
 	/** @var Stream */
-	protected $stream;
+	protected $output;
 
 	protected $name;
 	protected $description = "";
@@ -28,8 +28,8 @@ abstract class Command {
 	/** @var Parameter[] */
 	protected $requiredParameterList = [];
 
-	public function setStream(Stream $stream) {
-		$this->stream = $stream;
+	public function setOutput(Stream $output) {
+		$this->output = $output;
 	}
 
 	abstract public function run(ArgumentValueList $arguments):void;

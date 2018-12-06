@@ -76,5 +76,7 @@ class Stream {
 		case self::ERROR:
 			return $this->error;
 		}
+
+		throw new InvalidStreamNameException($streamName);
 	}
 }

@@ -13,7 +13,6 @@ class ArgumentList implements Iterator {
 	protected $iteratorIndex;
 
 	public function __construct(string $script, string...$arguments) {
-		var_dump($script, $arguments);die();
 		$this->script = $script;
 		$this->buildArgumentList($arguments);
 	}
