@@ -28,7 +28,15 @@ abstract class Command {
 	/** @var Parameter[] */
 	protected $requiredParameterList = [];
 
-	public function setOutput(Stream $output) {
+	public function __construct(Stream $output = null) {
+		if(is_null($output)) {
+			$output = new Stream(
+				"php://stdin",
+				"php://stdout",
+				"php://stderr"
+			);
+		}
+
 		$this->output = $output;
 	}
 
