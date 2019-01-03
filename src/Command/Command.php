@@ -28,7 +28,7 @@ abstract class Command {
 	/** @var Parameter[] */
 	protected $requiredParameterList = [];
 
-	public function setOutput(Stream $output) {
+	public function setOutput(Stream $output = null) {
 		$this->output = $output;
 	}
 
