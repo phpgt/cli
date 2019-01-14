@@ -11,6 +11,7 @@ use Gt\Cli\Argument\NamedArgument;
 use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\CliException;
 use Gt\Cli\Command\HelpCommand;
+use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Stream;
 use Gt\Cli\Test\Helper\Command\MultipleRequiredParameterCommand;
@@ -172,6 +173,70 @@ class CommandTest extends TestCase {
 		}
 		catch(CliException $exception) {}
 		self::assertNull($exception, "No exception should be thrown");
+	}
+
+	public function testCheckArgumentsMultipleBad() {
+// Almost identical test to above, but the "framework" arg will not be provided.
+		$args = [
+			self::createMock(NamedArgument::class),
+			self::createMock(NamedArgument::class),
+			self::createMock(LongOptionArgument::class),
+			self::createMock(LongOptionArgument::class),
+		];
+		$longArgs = [
+			null,
+			null,
+			["age" => "123"],
+			"example"
+		];
+
+		/** @var ArgumentList|MockObject $argList */
+		$argList = $this->createIteratorMock(
+			ArgumentList::class,
+			$args
+		);
+
+// TODO: Extract the "contains" and "getValueForParmater" functionality
+// into a "createArgumentListMock" function.
+		$argList->method("contains")
+			->willReturnCallback(function(Parameter $param)use($longArgs) {
+				$longOption = $param->getLongOption();
+				foreach($longArgs as $a) {
+					if(is_array($a)) {
+						if(key($a) === $longOption) {
+							return true;
+						}
+					}
+					else {
+						if($a === $longOption) {
+							return true;
+						}
+					}
+				}
+				return false;
+			});
+
+		$argList->method("getValueForParameter")
+			->willReturnCallback(function(Parameter $param)use($longArgs) {
+				$longOption = $param->getLongOption();
+				foreach($longArgs as $a) {
+					if(!is_array($a)) {
+						continue;
+					}
+
+					$key = key($a);
+					if($key !== $longOption) {
+						continue;
+					}
+
+					return $a[$key];
+				}
+				return null;
+			});
+
+		$command = new MultipleRequiredParameterCommand();
+		$this->expectException(MissingRequiredParameterException::class);
+		$command->checkArguments($argList);
 	}
 
 	protected function createIteratorMock(
