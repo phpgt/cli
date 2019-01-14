@@ -258,4 +258,22 @@ abstract class Command {
 			$example
 		);
 	}
+
+	protected function write(
+		string $message,
+		string $streamName = Stream::OUT
+	):void {
+		if(is_null($this->output)) {
+			return;
+		}
+
+		$this->output->write($message, $streamName);
+	}
+
+	protected function writeLine(
+		string $message = "",
+		string $streamName = Stream::OUT
+	):void {
+		$this->write($message . PHP_EOL, $streamName);
+	}
 }

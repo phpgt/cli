@@ -23,20 +23,20 @@ class HelpCommand extends Command {
 	}
 
 	public function run(ArgumentValueList $arguments): void {
-		$this->output->writeLine($this->applicationName);
-		$this->output->writeLine();
+		$this->writeLine($this->applicationName);
+		$this->writeLine();
 
 		if(empty($this->applicationCommandList)) {
-			$this->output->writeLine(
+			$this->writeLine(
 				"There are no commands available"
 			);
 			return;
 		}
 
-		$this->output->writeLine("Available commands:");
+		$this->writeLine("Available commands:");
 
 		foreach($this->applicationCommandList as $command) {
-			$this->output->writeLine(" • " .
+			$this->writeLine(" • " .
 				$command->getName()
 				. "\t"
 				. $command->getDescription()
