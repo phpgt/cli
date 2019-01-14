@@ -43,8 +43,9 @@ class ArgumentListTest extends TestCase {
 
 	/** @dataProvider data_randomLongArgs */
 	public function testIteratorWithLongArgs(string...$args) {
+		$scriptName = array_shift($args);
 		$argumentList = new ArgumentList(
-			array_shift($args),
+			$scriptName,
 			...$args
 		);
 
@@ -313,6 +314,10 @@ class ArgumentListTest extends TestCase {
 			$params []= uniqid("command-");
 
 			$numParams = rand(1, 10);
+			if($numParams % 2 !== 0) {
+				$numParams ++;
+			}
+
 			for($j = 0; $j < $numParams; $j++) {
 				$params []= uniqid();
 			}
@@ -333,6 +338,10 @@ class ArgumentListTest extends TestCase {
 			$params []= uniqid("command-");
 
 			$numParams = rand(1, 10);
+			if($numParams % 2 !== 0) {
+				$numParams ++;
+			}
+
 			for($j = 0; $j < $numParams; $j++) {
 				if($j % 2 === 0) {
 					$params []= "--" . uniqid();
@@ -358,6 +367,10 @@ class ArgumentListTest extends TestCase {
 			$params []= uniqid("command-");
 
 			$numParams = rand(1, 10);
+			if($numParams % 2 !== 0) {
+				$numParams ++;
+			}
+
 			for($j = 0; $j < $numParams; $j++) {
 				if($j % 2 === 0) {
 					$params []= "-" . uniqid();
