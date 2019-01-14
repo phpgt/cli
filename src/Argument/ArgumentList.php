@@ -57,7 +57,7 @@ class ArgumentList implements Iterator {
 				else {
 					$skipNextArgument = true;
 					$name = $arg;
-					$value = $arguments[$i + 1];
+					$value = $arguments[$i + 1] ?? null;
 				}
 
 				if ($arg[1] === "-") {

@@ -28,15 +28,7 @@ abstract class Command {
 	/** @var Parameter[] */
 	protected $requiredParameterList = [];
 
-	public function __construct(Stream $output = null) {
-		if(is_null($output)) {
-			$output = new Stream(
-				"php://stdin",
-				"php://stdout",
-				"php://stderr"
-			);
-		}
-
+	public function setOutput(Stream $output = null) {
 		$this->output = $output;
 	}
 
@@ -265,5 +257,23 @@ abstract class Command {
 			$shortOption,
 			$example
 		);
+	}
+
+	protected function write(
+		string $message,
+		string $streamName = Stream::OUT
+	):void {
+		if(is_null($this->output)) {
+			return;
+		}
+
+		$this->output->write($message, $streamName);
+	}
+
+	protected function writeLine(
+		string $message = "",
+		string $streamName = Stream::OUT
+	):void {
+		$this->write($message . PHP_EOL, $streamName);
 	}
 }
