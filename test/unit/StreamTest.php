@@ -57,4 +57,20 @@ class StreamTest extends TestCase {
 		$out->rewind();
 		self::assertRegExp("/^test\r?\n$/", $out->fread(1024));
 	}
+
+	public function testWriteToError() {
+		$stream = new Stream(
+			"php://memory",
+			"php://memory",
+			"php://memory"
+		);
+		$out = $stream->getOutStream();
+		$err = $stream->getErrorStream();
+
+		$stream->write("this should go to error", Stream::ERROR);
+		$out->rewind();
+		$err->rewind();
+		self::assertEmpty($out->fread(1024));
+		self::assertEquals("this should go to error", $err->fread(1024));
+	}
 }
