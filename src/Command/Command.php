@@ -32,7 +32,7 @@ abstract class Command {
 		$this->output = $output;
 	}
 
-	abstract public function run(ArgumentValueList $arguments):void;
+	abstract public function run(ArgumentValueList $arguments = null):void;
 
 	public function getName():string {
 		return $this->name;

@@ -27,6 +27,6 @@ class TestCommand extends Command {
 		);
 	}
 
-	public function run(ArgumentValueList $arguments):void {
+	public function run(ArgumentValueList $arguments = null):void {
 	}
 }

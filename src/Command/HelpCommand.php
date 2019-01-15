@@ -22,7 +22,7 @@ class HelpCommand extends Command {
 		$this->applicationCommandList = $applicationCommandList;
 	}
 
-	public function run(ArgumentValueList $arguments): void {
+	public function run(ArgumentValueList $arguments = null): void {
 		$this->writeLine($this->applicationName);
 		$this->writeLine();
 
