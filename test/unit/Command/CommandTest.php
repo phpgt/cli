@@ -227,6 +227,14 @@ class CommandTest extends TestCase {
 		self::assertEmpty($list);
 	}
 
+	public function testGetUsageSingleRequiredNamedParameter() {
+		$command = new SingleRequiredNamedParameterCommand();
+		self::assertEquals(
+			"Usage: single-required-named-parameter-command id",
+			$command->getUsage()
+		);
+	}
+
 	protected function createIteratorMock(
 		string $className,
 		array $items = []

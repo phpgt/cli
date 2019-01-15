@@ -6,7 +6,7 @@ use Gt\Cli\Command\Command;
 
 class SingleRequiredNamedParameterCommand extends Command {
 	public function __construct() {
-		$this->setName("Single Required Name Parameter Command");
+		$this->setName("single-required-named-parameter-command");
 		$this->setDescription("A test class for testing purposes.");
 
 		$this->setRequiredNamedParameter("id");

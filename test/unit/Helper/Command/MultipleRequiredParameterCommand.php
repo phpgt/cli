@@ -6,7 +6,7 @@ use Gt\Cli\Command\Command;
 
 class MultipleRequiredParameterCommand extends Command {
 	public function __construct() {
-		$this->setName("Multiple Required Parameter Command");
+		$this->setName("multiple-required-parameter-command");
 		$this->setDescription("A test class for testing purposes.");
 
 		$this->setRequiredNamedParameter("id");
