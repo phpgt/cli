@@ -12,6 +12,7 @@ use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\CliException;
 use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
+use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Stream;
 use Gt\Cli\Test\Helper\Command\ComboRequiredOptionalParameterCommand;
@@ -105,6 +106,32 @@ class CommandTest extends TestCase {
 
 		$command = new SingleRequiredNamedParameterCommand();
 		$this->expectException(NotEnoughArgumentsException::class);
+		$command->checkArguments($argList);
+	}
+
+	public function testCheckArgumentsMissingRequiredValue() {
+		$args = [
+			self::createMock(NamedArgument::class),
+			self::createMock(NamedArgument::class),
+			self::createMock(LongOptionArgument::class),
+			self::createMock(LongOptionArgument::class),
+		];
+		$longArgs = [
+			null,
+			null,
+			["framework" => null],
+			"example",
+		];
+
+		/** @var ArgumentList|MockObject $argList */
+		$argList = $this->createArgumentListMock(
+			$args,
+			$longArgs
+		);
+
+		$command = new MultipleRequiredParameterCommand();
+
+		$this->expectException(MissingRequiredParameterValueException::class);
 		$command->checkArguments($argList);
 	}
 
