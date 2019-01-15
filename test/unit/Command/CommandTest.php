@@ -122,48 +122,10 @@ class CommandTest extends TestCase {
 		];
 
 		/** @var ArgumentList|MockObject $argList */
-		$argList = $this->createIteratorMock(
-			ArgumentList::class,
-			$args
+		$argList = $this->createArgumentListMock(
+			$args,
+			$longArgs
 		);
-
-// TODO: Extract the "contains" and "getValueForParmater" functionality
-// into a "createArgumentListMock" function.
-		$argList->method("contains")
-			->willReturnCallback(function(Parameter $param)use($longArgs) {
-				$longOption = $param->getLongOption();
-				foreach($longArgs as $a) {
-					if(is_array($a)) {
-						if(key($a) === $longOption) {
-							return true;
-						}
-					}
-					else {
-						if($a === $longOption) {
-							return true;
-						}
-					}
-				}
-				return false;
-			});
-
-		$argList->method("getValueForParameter")
-			->willReturnCallback(function(Parameter $param)use($longArgs) {
-				$longOption = $param->getLongOption();
-				foreach($longArgs as $a) {
-					if(!is_array($a)) {
-						continue;
-					}
-
-					$key = key($a);
-					if($key !== $longOption) {
-						continue;
-					}
-
-					return $a[$key];
-				}
-				return null;
-			});
 
 		$command = new MultipleRequiredParameterCommand();
 
@@ -191,48 +153,10 @@ class CommandTest extends TestCase {
 		];
 
 		/** @var ArgumentList|MockObject $argList */
-		$argList = $this->createIteratorMock(
-			ArgumentList::class,
-			$args
+		$argList = $this->createArgumentListMock(
+			$args,
+			$longArgs
 		);
-
-// TODO: Extract the "contains" and "getValueForParmater" functionality
-// into a "createArgumentListMock" function.
-		$argList->method("contains")
-			->willReturnCallback(function(Parameter $param)use($longArgs) {
-				$longOption = $param->getLongOption();
-				foreach($longArgs as $a) {
-					if(is_array($a)) {
-						if(key($a) === $longOption) {
-							return true;
-						}
-					}
-					else {
-						if($a === $longOption) {
-							return true;
-						}
-					}
-				}
-				return false;
-			});
-
-		$argList->method("getValueForParameter")
-			->willReturnCallback(function(Parameter $param)use($longArgs) {
-				$longOption = $param->getLongOption();
-				foreach($longArgs as $a) {
-					if(!is_array($a)) {
-						continue;
-					}
-
-					$key = key($a);
-					if($key !== $longOption) {
-						continue;
-					}
-
-					return $a[$key];
-				}
-				return null;
-			});
 
 		$command = new MultipleRequiredParameterCommand();
 		$this->expectException(MissingRequiredParameterException::class);
@@ -268,5 +192,53 @@ class CommandTest extends TestCase {
 			});
 
 		return $mock;
+	}
+
+	protected function createArgumentListMock(
+		array $items = [],
+		array $longArgs = []
+	):MockObject {
+		$argList = $this->createIteratorMock(
+			ArgumentList::class,
+			$items
+		);
+
+		$argList->method("contains")
+			->willReturnCallback(function(Parameter $param)use($longArgs) {
+				$longOption = $param->getLongOption();
+				foreach($longArgs as $a) {
+					if(is_array($a)) {
+						if(key($a) === $longOption) {
+							return true;
+						}
+					}
+					else {
+						if($a === $longOption) {
+							return true;
+						}
+					}
+				}
+				return false;
+			});
+
+		$argList->method("getValueForParameter")
+			->willReturnCallback(function(Parameter $param)use($longArgs) {
+				$longOption = $param->getLongOption();
+				foreach($longArgs as $a) {
+					if(!is_array($a)) {
+						continue;
+					}
+
+					$key = key($a);
+					if($key !== $longOption) {
+						continue;
+					}
+
+					return $a[$key];
+				}
+				return null;
+			});
+
+		return $argList;
 	}
 }
