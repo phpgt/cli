@@ -260,6 +260,47 @@ class CommandTest extends TestCase {
 		);
 	}
 
+	public function testGetArgumentValueList() {
+		$idArgument = self::createMock(NamedArgument::class);
+		$idArgument->method("getValue")
+			->willReturn("test-id");
+		$nameArgument = self::createMock(NamedArgument::class);
+		$nameArgument->method("getValue")
+			->willReturn("Test name!");
+		$frameworkArgument = self::createMock(LongOptionArgument::class);
+		$frameworkArgument->method("getValue")
+			->willReturn("test-scaffolding");
+		$exampleArgument = self::createMock(LongOptionArgument::class);
+		$exampleArgument->method("getValue")
+			->willReturn("just-a-quick-example");
+
+		$args = [
+			$idArgument,
+			$nameArgument,
+			$frameworkArgument,
+			$exampleArgument,
+		];
+		$longArgs = [
+			null,
+			null,
+			["framework" => "php.gt"],
+			"example"
+		];
+
+		/** @var ArgumentList|MockObject $argList */
+		$argList = $this->createArgumentListMock(
+			$args,
+			$longArgs
+		);
+
+		$command = new MultipleRequiredParameterCommand();
+		$argumentValueList = $command->getArgumentValueList($argList);
+
+		self::assertEquals("test-id", $argumentValueList->get("id"));
+		self::assertEquals("Test name!", $argumentValueList->get("name"));
+		self::assertEquals("test-scaffolding", $argumentValueList->get("framework"));
+	}
+
 	protected function createIteratorMock(
 		string $className,
 		array $items = []
