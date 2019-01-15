@@ -228,10 +228,6 @@ abstract class Command {
 		$argumentValueList = new ArgumentValueList();
 
 		foreach($arguments as $argument) {
-			if($argument instanceof CommandArgument) {
-				continue;
-			}
-
 			if($argument instanceof NamedArgument) {
 				/** @var NamedParameter $parameter */
 				$parameter = $namedParameterList[
