@@ -51,52 +51,6 @@ abstract class Command {
 	}
 
 
-	public function checkArguments(ArgumentList $argumentList):void {
-		$numRequiredNamedParameters = count(
-			$this->requiredNamedParameterList
-		);
-
-		$passedNamedArguments = 0;
-		foreach($argumentList as $argument) {
-			if($argument instanceof NamedArgument) {
-				$passedNamedArguments ++;
-			}
-		}
-
-		if($passedNamedArguments < $numRequiredNamedParameters) {
-			throw new NotEnoughArgumentsException(
-				"Passed: $passedNamedArguments "
-				. "required: $numRequiredNamedParameters"
-			);
-		}
-
-		foreach($this->requiredParameterList as $parameter) {
-			if(!$argumentList->contains($parameter)) {
-				throw new MissingRequiredParameterException(
-					$parameter
-				);
-			}
-
-			if($parameter->isValueRequired()) {
-				$value = $argumentList->getValueForParameter(
-					$parameter
-				);
-				if(is_null($value)) {
-					throw new MissingRequiredParameterValueException(
-						$parameter
-					);
-				}
-			}
-		}
-	}
-
-	/**
-	 * @return NamedParameter[]
-	 */
-	public function getRequiredNamedParameterList():array {
-		return $this->requiredNamedParameterList;
-	}
-
 	public function getUsage():string {
 		$message = "";
 
@@ -144,6 +98,113 @@ abstract class Command {
 		}
 
 		return $message;
+	}
+
+	public function checkArguments(ArgumentList $argumentList):void {
+		$numRequiredNamedParameters = count(
+			$this->requiredNamedParameterList
+		);
+
+		$passedNamedArguments = 0;
+		foreach($argumentList as $argument) {
+			if($argument instanceof NamedArgument) {
+				$passedNamedArguments ++;
+			}
+		}
+
+		if($passedNamedArguments < $numRequiredNamedParameters) {
+			throw new NotEnoughArgumentsException(
+				"Passed: $passedNamedArguments "
+				. "required: $numRequiredNamedParameters"
+			);
+		}
+
+		foreach($this->requiredParameterList as $parameter) {
+			if(!$argumentList->contains($parameter)) {
+				throw new MissingRequiredParameterException(
+					$parameter
+				);
+			}
+
+			if($parameter->isValueRequired()) {
+				$value = $argumentList->getValueForParameter(
+					$parameter
+				);
+				if(is_null($value)) {
+					throw new MissingRequiredParameterValueException(
+						$parameter
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @return NamedParameter[]
+	 */
+	public function getRequiredNamedParameterList():array {
+		return $this->requiredNamedParameterList;
+	}
+
+	/**
+	 * @return NamedParameter[]
+	 */
+	public function getOptionalNamedParameterList():array {
+		return $this->optionalNamedParameterList;
+	}
+
+	protected function setRequiredNamedParameter(string $name):void {
+		$this->requiredNamedParameterList []= new NamedParameter(
+			$name
+		);
+	}
+
+	/**
+	 * @return Parameter[]
+	 */
+	public function getOptionalParameterList():array {
+		return $this->optionalParameterList;
+	}
+
+	protected function setOptionalNamedParameter(string $name):void {
+		$this->optionalNamedParameterList []= new NamedParameter(
+			$name
+		);
+	}
+
+	protected function setOptionalParameter(
+		bool $requireValue,
+		string $longOption,
+		string $shortOption = null,
+		string $example = null
+	):void {
+		$this->optionalParameterList []= new Parameter(
+			$requireValue,
+			$longOption,
+			$shortOption,
+			$example
+		);
+	}
+
+	/**
+	 * @return Parameter[]
+	 */
+	public function getRequiredParameterList():array {
+		return $this->requiredParameterList;
+	}
+
+	protected function setRequiredParameter(
+		bool $requireValue,
+		string $longOption,
+		string $shortOption = null,
+		string $example = null
+	):void {
+		$this->requiredParameterList []= new Parameter(
+			$requireValue,
+			$longOption,
+			$shortOption,
+			$example
+		);
 	}
 
 	public function getArgumentValueList(
@@ -196,67 +257,6 @@ abstract class Command {
 		}
 
 		return $argumentValueList;
-	}
-
-	protected function setRequiredNamedParameter(string $name):void {
-		$this->requiredNamedParameterList []= new NamedParameter(
-			$name
-		);
-	}
-
-	/**
-	 * @return NamedParameter[]
-	 */
-	public function getOptionalNamedParameterList():array {
-		return $this->optionalNamedParameterList;
-	}
-
-	protected function setOptionalNamedParameter(string $name):void {
-		$this->optionalNamedParameterList []= new NamedParameter(
-			$name
-		);
-	}
-
-	/**
-	 * @return Parameter[]
-	 */
-	public function getRequiredParameterList():array {
-		return $this->requiredParameterList;
-	}
-
-	protected function setRequiredParameter(
-		bool $requireValue,
-		string $longOption,
-		string $shortOption = null,
-		string $example = null
-	):void {
-		$this->requiredParameterList []= new Parameter(
-			$requireValue,
-			$longOption,
-			$shortOption,
-			$example
-		);
-	}
-
-	/**
-	 * @return Parameter[]
-	 */
-	public function getOptionalParameterList():array {
-		return $this->optionalParameterList;
-	}
-
-	protected function setOptionalParameter(
-		bool $requireValue,
-		string $longOption,
-		string $shortOption = null,
-		string $example = null
-	):void {
-		$this->optionalParameterList []= new Parameter(
-			$requireValue,
-			$longOption,
-			$shortOption,
-			$example
-		);
 	}
 
 	protected function write(
