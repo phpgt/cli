@@ -44,6 +44,7 @@ class Parameter {
 	}
 
 	public function getExample():string {
-		return $this->example ?? "value";
+		return $this->example
+			?? strtoupper($this->longOption) . "_VALUE";
 	}
 }

@@ -243,6 +243,14 @@ class CommandTest extends TestCase {
 		);
 	}
 
+	public function testGetUsageComboRequiredOptionalParameter() {
+		$command = new ComboRequiredOptionalParameterCommand();
+		self::assertEquals(
+			"Usage: combo-required-optional-parameter-command id [name] --type|-t TYPE_VALUE [--verbose|-v]",
+			$command->getUsage()
+		);
+	}
+
 	protected function createIteratorMock(
 		string $className,
 		array $items = []

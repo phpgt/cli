@@ -93,8 +93,9 @@ abstract class Command {
 			if($parameter->isValueRequired()) {
 				$message .= " ";
 				$message .= $parameter->getExample();
-				$message .= "]";
 			}
+
+			$message .= "]";
 		}
 
 		return $message;
