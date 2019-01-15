@@ -176,6 +176,12 @@ class CommandTest extends TestCase {
 		self::assertContains("name", $requiredNames);
 	}
 
+	public function testGetOptionalNamedParameterListWhenThereIsNone() {
+		$command = new MultipleRequiredParameterCommand();
+		$list = $command->getOptionalNamedParameterList();
+		self::assertEmpty($list);
+	}
+
 	protected function createIteratorMock(
 		string $className,
 		array $items = []
