@@ -163,6 +163,19 @@ class CommandTest extends TestCase {
 		$command->checkArguments($argList);
 	}
 
+	public function testGetRequiredNamedParameterList() {
+		$command = new MultipleRequiredParameterCommand();
+		$list = $command->getRequiredNamedParameterList();
+		$requiredNames = [];
+
+		foreach($list as $item) {
+			$requiredNames []= $item->getOptionName();
+		}
+
+		self::assertContains("id", $requiredNames);
+		self::assertContains("name", $requiredNames);
+	}
+
 	protected function createIteratorMock(
 		string $className,
 		array $items = []
