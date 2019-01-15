@@ -15,6 +15,7 @@ use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Stream;
+use Gt\Cli\Test\Helper\Command\AllParameterTypesCommand;
 use Gt\Cli\Test\Helper\Command\ComboRequiredOptionalParameterCommand;
 use Gt\Cli\Test\Helper\Command\MultipleRequiredParameterCommand;
 use Gt\Cli\Test\Helper\Command\SingleRequiredNamedParameterCommand;
@@ -247,6 +248,14 @@ class CommandTest extends TestCase {
 		$command = new ComboRequiredOptionalParameterCommand();
 		self::assertEquals(
 			"Usage: combo-required-optional-parameter-command id [name] --type|-t TYPE_VALUE [--verbose|-v]",
+			$command->getUsage()
+		);
+	}
+
+	public function testGetUsageAllParameterTypes() {
+		$command = new AllParameterTypesCommand();
+		self::assertEquals(
+			"Usage: all-parameter-types-command id [name] --type|-t TYPE_VALUE [--log|-l LOG_PATH] [--verbose|-v]",
 			$command->getUsage()
 		);
 	}
