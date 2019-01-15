@@ -14,7 +14,8 @@ class MultipleRequiredParameterCommand extends Command {
 		$this->setRequiredParameter(
 			true,
 			"framework",
-			"f"
+			"f",
+			"rinky-dink"
 		);
 		$this->setRequiredParameter(
 			false,

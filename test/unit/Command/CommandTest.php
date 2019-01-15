@@ -235,6 +235,14 @@ class CommandTest extends TestCase {
 		);
 	}
 
+	public function testGetUsageMultipleRequiredParameter() {
+		$command = new MultipleRequiredParameterCommand();
+		self::assertEquals(
+			"Usage: multiple-required-parameter-command id name --framework|-f rinky-dink --example",
+			$command->getUsage()
+		);
+	}
+
 	protected function createIteratorMock(
 		string $className,
 		array $items = []
