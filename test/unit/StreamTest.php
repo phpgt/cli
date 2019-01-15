@@ -33,4 +33,16 @@ class StreamTest extends TestCase {
 		self::assertEquals($outPath, $out->getRealPath());
 		self::assertEquals($errPath, $err->getRealPath());
 	}
+
+	public function testWrite() {
+		$stream = new Stream(
+			"php://memory",
+			"php://memory",
+			"php://memory"
+		);
+		$out = $stream->getOutStream();
+		$stream->write("test");
+		$out->rewind();
+		self::assertEquals("test", $out->fread(1024));
+	}
 }
