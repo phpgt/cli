@@ -1,10 +1,11 @@
 <?php
-namespace Gt\Cli;
+namespace Gt\Cli\Command;
 
+use Gt\Cli\Argument\ArgumentList;
+use Gt\Cli\Stream;
 use Gt\Cli\Argument\Argument;
 use Gt\Cli\Argument\CommandArgument;
 use Gt\Cli\Argument\NamedArgument;
-use Gt\Installer\Argument\ArgumentList;
 use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Parameter\NamedParameter;
@@ -63,7 +64,7 @@ abstract class CliCommand {
 		}
 
 		if($passedNamedArguments < $numRequiredNamedParameters) {
-			throw new NotEnoughArgumentsException();
+			throw new NotEnoughArgumentsException($passedNamedArguments);
 		}
 
 		foreach($this->requiredParameterList as $parameter) {
