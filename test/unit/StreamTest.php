@@ -1,6 +1,7 @@
 <?php
 namespace Gt\Cli\Test;
 
+use Gt\Cli\InvalidStreamNameException;
 use Gt\Cli\Stream;
 use PHPUnit\Framework\TestCase;
 
@@ -85,5 +86,15 @@ class StreamTest extends TestCase {
 		$stream->write("can't write to stdin", Stream::IN);
 		$in->rewind();
 		self::assertEmpty($in->fread(1024));
+	}
+
+	public function testInvalidStreamName() {
+		$stream = new Stream(
+			"php://memory",
+			"php://memory",
+			"php://memory"
+		);
+		$this->expectException(InvalidStreamNameException::class);
+		$stream->write("this does not exist", "nothing");
 	}
 }
