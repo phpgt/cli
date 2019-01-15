@@ -254,6 +254,8 @@ abstract class Command {
 					$parameter->getLongOption(),
 					$argument->getValue()
 				);
+
+				$parameterIndex++;
 			}
 		}
 
