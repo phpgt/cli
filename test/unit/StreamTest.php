@@ -45,4 +45,16 @@ class StreamTest extends TestCase {
 		$out->rewind();
 		self::assertEquals("test", $out->fread(1024));
 	}
+
+	public function testWriteLine() {
+		$stream = new Stream(
+			"php://memory",
+			"php://memory",
+			"php://memory"
+		);
+		$out = $stream->getOutStream();
+		$stream->writeLine("test");
+		$out->rewind();
+		self::assertRegExp("/^test\r?\n$/", $out->fread(1024));
+	}
 }
