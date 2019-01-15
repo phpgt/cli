@@ -14,6 +14,7 @@ use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Stream;
+use Gt\Cli\Test\Helper\Command\ComboRequiredOptionalParameterCommand;
 use Gt\Cli\Test\Helper\Command\MultipleRequiredParameterCommand;
 use Gt\Cli\Test\Helper\Command\SingleRequiredNamedParameterCommand;
 use Gt\Cli\Test\Helper\Command\TestCommand;
@@ -174,6 +175,20 @@ class CommandTest extends TestCase {
 
 		self::assertContains("id", $requiredNames);
 		self::assertContains("name", $requiredNames);
+		self::assertCount(2, $requiredNames);
+	}
+
+	public function testGetRequiredParameterList() {
+		$command = new ComboRequiredOptionalParameterCommand();
+		$list = $command->getRequiredParameterList();
+		$requiredLongOptions = [];
+
+		foreach($list as $item) {
+			$requiredLongOptions []= $item->getLongOption();
+		}
+
+		self::assertContains("type", $requiredLongOptions);
+		self::assertCount(1, $requiredLongOptions);
 	}
 
 	public function testGetParameterListWhenThereIsNone() {
