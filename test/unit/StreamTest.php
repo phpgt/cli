@@ -73,4 +73,17 @@ class StreamTest extends TestCase {
 		self::assertEmpty($out->fread(1024));
 		self::assertEquals("this should go to error", $err->fread(1024));
 	}
+
+	public function testWriteToIn() {
+		$stream = new Stream(
+			"php://memory",
+			"php://memory",
+			"php://memory"
+		);
+		$in = $stream->getInStream();
+
+		$stream->write("can't write to stdin", Stream::IN);
+		$in->rewind();
+		self::assertEmpty($in->fread(1024));
+	}
 }
