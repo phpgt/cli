@@ -75,8 +75,6 @@ class Application {
 				$command->getUsage(),
 				Stream::ERROR
 			);
-
-			exit(ErrorCode::get($exception));
 		}
 	}
 
