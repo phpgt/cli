@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Cli\Test;
+namespace Gt\Cli\Test\Argument;
 
 use Gt\Cli\Argument\LongOptionArgument;
 use Gt\Cli\Argument\NamedArgument;
