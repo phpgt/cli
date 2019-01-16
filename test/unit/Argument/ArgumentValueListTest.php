@@ -21,4 +21,11 @@ class ArgumentValueListTest extends TestCase {
 			$avl->get("test")
 		);
 	}
+
+	public function testContains() {
+		$avl = new ArgumentValueList();
+		self::assertFalse($avl->contains("test"));
+		$avl->set("test", "example-value");
+		self::assertTrue($avl->contains("test"));
+	}
 }
