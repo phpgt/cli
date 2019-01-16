@@ -12,6 +12,9 @@ class StreamTest extends TestCase {
 			"phpgt",
 			"cli",
 		]);
+		if(!is_dir($tmp)) {
+			mkdir($tmp, 0775, true);
+		}
 
 		$inPath = implode(DIRECTORY_SEPARATOR, [$tmp, "in"]);
 		$outPath = implode(DIRECTORY_SEPARATOR, [$tmp, "in"]);
@@ -33,6 +36,16 @@ class StreamTest extends TestCase {
 		self::assertEquals($inPath, $in->getRealPath());
 		self::assertEquals($outPath, $out->getRealPath());
 		self::assertEquals($errPath, $err->getRealPath());
+
+		chdir($tmp);
+		foreach(scandir($tmp) as $file) {
+			if($file[0] === ".") {
+				continue;
+			}
+
+			unlink($file);
+		}
+		rmdir($tmp);
 	}
 
 	public function testWrite() {
