@@ -7,9 +7,18 @@ use Gt\Cli\Argument\ArgumentValueListNotSetException;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentValueListTest extends TestCase {
-	public function testGetSetNotSet() {
+	public function testGetNotSet() {
 		$avl = new ArgumentValueList();
 		$this->expectException(ArgumentValueListNotSetException::class);
 		$avl->get("test");
+	}
+
+	public function testGetSet() {
+		$avl = new ArgumentValueList();
+		$avl->set("test", "example-value");
+		self::assertEquals(
+			"example-value",
+			$avl->get("test")
+		);
 	}
 }
