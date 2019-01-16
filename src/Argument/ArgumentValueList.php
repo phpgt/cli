@@ -9,6 +9,9 @@ class ArgumentValueList {
 	}
 
 	public function get(string $key):string {
+		if(!isset($this->valueMap[$key])) {
+			throw new ArgumentValueListNotSetException($key);
+		}
 		return $this->valueMap[$key];
 	}
 
