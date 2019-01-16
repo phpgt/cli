@@ -18,7 +18,7 @@ class Application {
 
 	public function __construct(
 		string $applicationName,
-		ArgumentList $arguments,
+		ArgumentList $arguments = null,
 		Command...$commands
 	) {
 		$this->applicationName = $applicationName;
@@ -43,6 +43,14 @@ class Application {
 
 	public function run():void {
 		$command = null;
+
+		if(is_null($this->arguments)) {
+			$this->stream->writeLine(
+				"Application has no commands",
+				Stream::ERROR
+			);
+			return;
+		}
 
 		try {
 			$commandName = $this->arguments->getCommandName();

@@ -17,8 +17,8 @@ class StreamTest extends TestCase {
 		}
 
 		$inPath = implode(DIRECTORY_SEPARATOR, [$tmp, "in"]);
-		$outPath = implode(DIRECTORY_SEPARATOR, [$tmp, "in"]);
-		$errPath = implode(DIRECTORY_SEPARATOR, [$tmp, "in"]);
+		$outPath = implode(DIRECTORY_SEPARATOR, [$tmp, "out"]);
+		$errPath = implode(DIRECTORY_SEPARATOR, [$tmp, "err"]);
 		touch($inPath);
 		touch($outPath);
 		touch($errPath);
