@@ -3,14 +3,17 @@ namespace Gt\Cli\Test;
 
 use Gt\Cli\Application;
 use Gt\Cli\Argument\ArgumentList;
+use Gt\Cli\Argument\LongOptionArgument;
+use Gt\Cli\Argument\NamedArgument;
 use Gt\Cli\Stream;
+use Gt\Cli\Test\Helper\ArgumentMockTestCase;
 use Gt\Cli\Test\Helper\Command\TestCommand;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class ApplicationTest extends TestCase {
+class ApplicationTest extends ArgumentMockTestCase {
 	protected $tmp;
 	protected $inPath;
 	protected $outPath;
@@ -114,6 +117,68 @@ class ApplicationTest extends TestCase {
 		self::assertStreamContains(
 			"Usage: invalid-test",
 			Stream::ERROR
+		);
+	}
+
+	public function testCommandRun() {
+		$idArgument = self::createMock(NamedArgument::class);
+		$idArgument->method("getValue")
+			->willReturn("abcde");
+		$mustHaveValueArgument = self::createMock(LongOptionArgument::class);
+		$mustHaveValueArgument->method("getValue")
+			->willReturn("1234");
+
+		$args = [
+			$idArgument,
+			$mustHaveValueArgument,
+		];
+		$longArgs = [
+			"abcde",
+			["must-have-value" => "1234"],
+		];
+
+		/** @var MockObject|ArgumentList $arguments */
+		$arguments = self::createArgumentListMock(
+			$args,
+			$longArgs
+		);
+
+		$arguments->method("getCommandName")
+			->willReturn("valid-test");
+
+		$application = new Application(
+			"test-app",
+			$arguments,
+			new TestCommand("valid")
+		);
+		$application->setStream(
+			$this->inPath,
+			$this->outPath,
+			$this->errPath
+		);
+		$application->run();
+
+		self::assertStreamEmpty(Stream::ERROR);
+
+		self::assertStreamContains(
+			"Command ID: abcde",
+			Stream::OUT
+		);
+		self::assertStreamContains(
+			"Command running successfully",
+			Stream::OUT
+		);
+		self::assertStreamContains(
+			"No Option set",
+			Stream::OUT
+		);
+		self::assertStreamContains(
+			"Must-have-value: 1234",
+			Stream::OUT
+		);
+		self::assertStreamContains(
+			"No-value argument not set",
+			Stream::OUT
 		);
 	}
 
