@@ -3,6 +3,8 @@ namespace Gt\Cli\Test;
 
 use Gt\Cli\Application;
 use Gt\Cli\Argument\ArgumentList;
+use Gt\Cli\Stream;
+use Gt\Cli\Test\Helper\Command\TestCommand;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
@@ -24,9 +26,9 @@ class ApplicationTest extends TestCase {
 			mkdir($this->tmp, 0775, true);
 		}
 
-		$this->inPath = implode(DIRECTORY_SEPARATOR, [$this->tmp, "in"]);
-		$this->outPath = implode(DIRECTORY_SEPARATOR, [$this->tmp, "out"]);
-		$this->errPath = implode(DIRECTORY_SEPARATOR, [$this->tmp, "err"]);
+		$this->inPath = implode(DIRECTORY_SEPARATOR, [$this->tmp, Stream::IN]);
+		$this->outPath = implode(DIRECTORY_SEPARATOR, [$this->tmp, Stream::OUT]);
+		$this->errPath = implode(DIRECTORY_SEPARATOR, [$this->tmp, STREAM::ERROR]);
 		touch($this->inPath);
 		touch($this->outPath);
 		touch($this->errPath);
@@ -61,10 +63,11 @@ class ApplicationTest extends TestCase {
 		);
 		$application->run();
 
-		$out = file_get_contents($this->outPath);
-		$err = file_get_contents($this->errPath);
-		self::assertContains("Application received no arguments", $err);
-		self::assertEmpty($out);
+		self::assertStreamContains(
+			"Application received no arguments",
+			Stream::ERROR
+		);
+		self::assertStreamEmpty(Stream::OUT);
 	}
 
 	public function testCommandArgumentInvalid() {
@@ -84,7 +87,61 @@ class ApplicationTest extends TestCase {
 		);
 		$application->run();
 
-		$err = file_get_contents($this->errPath);
-		self::assertContains("Invalid command: \"test-command\"", $err);
+		self::assertStreamContains(
+			"Invalid command: \"test-command\"",
+			Stream::ERROR
+		);
+	}
+
+	public function testCommandArgumentsInvalid() {
+		/** @var MockObject|ArgumentList $arguments */
+		$arguments = self::createMock(ArgumentList::class);
+		$arguments->method("getCommandName")
+			->willReturn("invalid-test");
+
+		$application = new Application(
+			"test-app",
+			$arguments,
+			new TestCommand("invalid")
+		);
+		$application->setStream(
+			$this->inPath,
+			$this->outPath,
+			$this->errPath
+		);
+		$application->run();
+
+		self::assertStreamContains(
+			"Usage: invalid-test",
+			Stream::ERROR
+		);
+	}
+
+	protected function assertStreamContains(
+		string $message,
+		string $streamName
+	):void {
+		$streamPath = $this->getStreamPathByName($streamName);
+		$streamContents = file_get_contents($streamPath);
+		self::assertContains(
+			$message,
+			$streamContents,
+			"Stream should contain message."
+		);
+	}
+
+	protected function assertStreamEmpty(
+		string $streamName
+	):void {
+		$streamPath = $this->getStreamPathByName($streamName);
+		$streamContents = trim(file_get_contents($streamPath));
+		self::assertEmpty($streamContents);
+	}
+
+	protected function getStreamPathByName(string $name):string {
+		return implode(DIRECTORY_SEPARATOR, [
+			$this->tmp,
+			$name,
+		]);
 	}
 }
