@@ -30,5 +30,10 @@ class ApplicationTest extends TestCase {
 		$err = file_get_contents($errPath);
 		self::assertContains("Application has no commands", $err);
 		self::assertEmpty($out);
+
+		$application = null;
+		unlink($inPath);
+		unlink($outPath);
+		unlink($errPath);
 	}
 }
