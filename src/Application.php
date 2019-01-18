@@ -46,7 +46,7 @@ class Application {
 
 		if(is_null($this->arguments)) {
 			$this->stream->writeLine(
-				"Application has no commands",
+				"Application received no arguments",
 				Stream::ERROR
 			);
 			return;

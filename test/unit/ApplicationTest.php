@@ -28,7 +28,7 @@ class ApplicationTest extends TestCase {
 
 		$out = file_get_contents($outPath);
 		$err = file_get_contents($errPath);
-		self::assertContains("Application has no commands", $err);
+		self::assertContains("Application received no arguments", $err);
 		self::assertEmpty($out);
 
 		$application = null;
