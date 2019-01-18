@@ -1,8 +1,6 @@
 <?php
 namespace Gt\Cli\Test\Command;
 
-use ArrayIterator;
-use Gt\Cli\Argument\Argument;
 use Gt\Cli\Argument\ArgumentList;
 use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Argument\CommandArgument;
@@ -13,7 +11,6 @@ use Gt\Cli\CliException;
 use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\MissingRequiredParameterValueException;
-use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Stream;
 use Gt\Cli\Test\Helper\ArgumentMockTestCase;
 use Gt\Cli\Test\Helper\Command\AllParameterTypesCommand;
@@ -21,9 +18,7 @@ use Gt\Cli\Test\Helper\Command\ComboRequiredOptionalParameterCommand;
 use Gt\Cli\Test\Helper\Command\MultipleRequiredParameterCommand;
 use Gt\Cli\Test\Helper\Command\SingleRequiredNamedParameterCommand;
 use Gt\Cli\Test\Helper\Command\TestCommand;
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 class CommandTest extends ArgumentMockTestCase {
 	public function testSetOutput() {

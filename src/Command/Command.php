@@ -4,7 +4,6 @@ namespace Gt\Cli\Command;
 use Gt\Cli\Argument\Argument;
 use Gt\Cli\Argument\ArgumentList;
 use Gt\Cli\Argument\ArgumentValueList;
-use Gt\Cli\Argument\CommandArgument;
 use Gt\Cli\Argument\NamedArgument;
 use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\Parameter\MissingRequiredParameterException;

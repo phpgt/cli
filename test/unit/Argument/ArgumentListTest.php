@@ -4,7 +4,6 @@ namespace Gt\Cli\Test\Argument;
 use Gt\Cli\Argument\Argument;
 use Gt\Cli\Argument\ArgumentList;
 use Gt\Cli\Parameter\Parameter;
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentListTest extends TestCase {
