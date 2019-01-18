@@ -60,7 +60,19 @@ class Application {
 			$argumentValueList = $command->getArgumentValueList(
 				$this->arguments
 			);
+		}
+		catch(CliException $exception) {
+			$this->stream->writeLine(
+				$exception->getMessage(),
+				Stream::ERROR
+			);
+		}
 
+		if(is_null($command)) {
+			return;
+		}
+
+		try {
 			$command->checkArguments(
 				$this->arguments
 			);
@@ -68,16 +80,9 @@ class Application {
 		}
 		catch(CliException $exception) {
 			$this->stream->writeLine(
-				$exception->getMessage(),
+				$command->getUsage(),
 				Stream::ERROR
 			);
-
-			if(!is_null($command)) {
-				$this->stream->writeLine(
-					$command->getUsage(),
-					Stream::ERROR
-				);
-			}
 		}
 	}
 
