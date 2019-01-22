@@ -46,7 +46,7 @@ class Application {
 
 		if(is_null($this->arguments)) {
 			$this->stream->writeLine(
-				"Application received no arguments",
+				"Application has no commands",
 				Stream::ERROR
 			);
 			return;
@@ -60,25 +60,17 @@ class Application {
 			$argumentValueList = $command->getArgumentValueList(
 				$this->arguments
 			);
-		}
-		catch(CliException $exception) {
-			$this->stream->writeLine(
-				$exception->getMessage(),
-				Stream::ERROR
-			);
-		}
 
-		if(is_null($command)) {
-			return;
-		}
-
-		try {
 			$command->checkArguments(
 				$this->arguments
 			);
 			$command->run($argumentValueList);
 		}
 		catch(CliException $exception) {
+			$this->stream->writeLine(
+				$exception->getMessage(),
+				Stream::ERROR
+			);
 			$this->stream->writeLine(
 				$command->getUsage(),
 				Stream::ERROR

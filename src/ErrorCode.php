@@ -12,7 +12,6 @@ class ErrorCode {
 	const DEFAULT_CODE = 1000;
 
 	protected static $classList = [
-		"NO_ERROR",
 		NotEnoughArgumentsException::class,
 		CommandException::class,
 		InvalidCommandException::class,
@@ -20,9 +19,13 @@ class ErrorCode {
 		MissingRequiredParameterException::class,
 	];
 
-	public static function get(string $exceptionClassName):int {
+	public static function get($exception):int {
+		if($exception instanceof Exception) {
+			$exception = get_class($exception);
+		}
+
 		return array_search(
-			$exceptionClassName,
+			$exception,
 			self::$classList
 		) ?: self::DEFAULT_CODE;
 	}

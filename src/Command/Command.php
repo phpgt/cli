@@ -4,6 +4,7 @@ namespace Gt\Cli\Command;
 use Gt\Cli\Argument\Argument;
 use Gt\Cli\Argument\ArgumentList;
 use Gt\Cli\Argument\ArgumentValueList;
+use Gt\Cli\Argument\CommandArgument;
 use Gt\Cli\Argument\NamedArgument;
 use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
@@ -227,7 +228,10 @@ abstract class Command {
 		$argumentValueList = new ArgumentValueList();
 
 		foreach($arguments as $argument) {
-			if($argument instanceof NamedArgument) {
+			if($argument instanceof CommandArgument) {
+				continue;
+			}
+			elseif($argument instanceof NamedArgument) {
 				/** @var NamedParameter $parameter */
 				$parameter = $namedParameterList[
 					$namedParameterIndex

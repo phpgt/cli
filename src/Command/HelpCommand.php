@@ -20,6 +20,7 @@ class HelpCommand extends Command {
 
 		$this->applicationName = $applicationName;
 		$this->applicationCommandList = $applicationCommandList;
+		$this->applicationCommandList []= $this;
 	}
 
 	public function run(ArgumentValueList $arguments = null): void {
@@ -35,9 +36,17 @@ class HelpCommand extends Command {
 
 		$this->writeLine("Available commands:");
 
+		$maxNameLength = 0;
+		foreach($this->applicationCommandList as $command) {
+			$nameLength = strlen($command->getName());
+			if($nameLength > $maxNameLength) {
+				$maxNameLength = $nameLength;
+			}
+		}
+
 		foreach($this->applicationCommandList as $command) {
 			$this->writeLine(" • " .
-				$command->getName()
+				str_pad($command->getName(), $maxNameLength, " ")
 				. "\t"
 				. $command->getDescription()
 			);
