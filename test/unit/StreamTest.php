@@ -47,9 +47,9 @@ class StreamTest extends TestCase {
 				$tmp,
 				$file,
 			]);
-			unlink($fullPath);
+			@unlink($fullPath);
 		}
-		rmdir($tmp);
+		@rmdir($tmp);
 	}
 
 	public function testWrite() {

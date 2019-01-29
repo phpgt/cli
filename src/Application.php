@@ -71,10 +71,12 @@ class Application {
 				$exception->getMessage(),
 				Stream::ERROR
 			);
-			$this->stream->writeLine(
-				$command->getUsage(),
-				Stream::ERROR
-			);
+			if($command) {
+				$this->stream->writeLine(
+					$command->getUsage(),
+					Stream::ERROR
+				);
+			}
 		}
 	}
 

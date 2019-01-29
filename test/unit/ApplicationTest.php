@@ -51,10 +51,10 @@ class ApplicationTest extends ArgumentMockTestCase {
 				? "rmdir"
 				: "unlink";
 
-			$function($fileInfo->getRealPath());
+			@$function($fileInfo->getRealPath());
 		}
 
-		rmdir($this->tmp);
+		@rmdir($this->tmp);
 	}
 
 	public function testSetStream() {
@@ -67,7 +67,7 @@ class ApplicationTest extends ArgumentMockTestCase {
 		$application->run();
 
 		self::assertStreamContains(
-			"Application received no arguments",
+			"Application has no commands",
 			Stream::ERROR
 		);
 		self::assertStreamEmpty(Stream::OUT);
@@ -181,6 +181,37 @@ class ApplicationTest extends ArgumentMockTestCase {
 			Stream::OUT
 		);
 	}
+
+//	public function testUserArguments() {
+//		$userArgument1 = self::createMock(UserArgument::class);
+//		$userArgument2 = self::createMock(UserArgument::class);
+//		$userArgument3 = self::createMock(UserArgument::class);
+//
+//		$args = [
+//			$userArgument1,
+//			$userArgument2,
+//			$userArgument3,
+//		];
+//		$longArgs = [
+//			"abcde",
+//			["language" => "php"],
+//			["repo" => "phpgt/cli"],
+//		];
+//
+//		/** @var MockObject|ArgumentList $arguments */
+//		$arguments = self::createArgumentListMock(
+//			$args,
+//			$longArgs
+//		);
+//		$arguments->method("getCommandName")
+//			->willReturn("arbitrary-test");
+//
+//		$application = new Application(
+//			"test-app",
+//			$arguments,
+//			new TestCommand("arbitrary")
+//		);
+//	}
 
 	protected function assertStreamContains(
 		string $message,
