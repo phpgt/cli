@@ -237,10 +237,19 @@ abstract class Command {
 					$namedParameterIndex
 				];
 
-				$argumentValueList->set(
-					$parameter->getOptionName(),
-					$argument->getValue()
-				);
+				if(is_null($parameter)) {
+					$argumentValueList->set(
+						Argument::USER_DATA,
+						$argument->getValue()
+					);
+				}
+				else {
+					$argumentValueList->set(
+						$parameter->getOptionName(),
+						$argument->getValue()
+					);
+				}
+
 				$namedParameterIndex++;
 			}
 			elseif($argument instanceof Argument) {

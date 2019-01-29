@@ -5,6 +5,7 @@ class ArgumentValueList {
 	protected $valueMap = [];
 
 	public function set(string $key, string $value = null):void {
+// TODO: Issue #17 can convert existing values to arrays here.
 		$this->valueMap[$key] = $value;
 	}
 
