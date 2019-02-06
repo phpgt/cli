@@ -37,13 +37,17 @@ class StreamTest extends TestCase {
 		self::assertEquals($outPath, $out->getRealPath());
 		self::assertEquals($errPath, $err->getRealPath());
 
-		chdir($tmp);
+		$stream = $in = $out = $err = null;
 		foreach(scandir($tmp) as $file) {
 			if($file[0] === ".") {
 				continue;
 			}
 
-			unlink($file);
+			$fullPath = implode(DIRECTORY_SEPARATOR, [
+				$tmp,
+				$file,
+			]);
+			unlink($fullPath);
 		}
 		rmdir($tmp);
 	}

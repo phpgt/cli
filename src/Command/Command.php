@@ -228,16 +228,28 @@ abstract class Command {
 		$argumentValueList = new ArgumentValueList();
 
 		foreach($arguments as $argument) {
-			if($argument instanceof NamedArgument) {
+			if($argument instanceof CommandArgument) {
+				continue;
+			}
+			elseif($argument instanceof NamedArgument) {
 				/** @var NamedParameter $parameter */
 				$parameter = $namedParameterList[
 					$namedParameterIndex
 				];
 
-				$argumentValueList->set(
-					$parameter->getOptionName(),
-					$argument->getValue()
-				);
+				if(is_null($parameter)) {
+					$argumentValueList->set(
+						Argument::USER_DATA,
+						$argument->getValue()
+					);
+				}
+				else {
+					$argumentValueList->set(
+						$parameter->getOptionName(),
+						$argument->getValue()
+					);
+				}
+
 				$namedParameterIndex++;
 			}
 			elseif($argument instanceof Argument) {

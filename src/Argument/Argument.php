@@ -2,6 +2,7 @@
 namespace Gt\Cli\Argument;
 
 abstract class Argument {
+	const USER_DATA = "__user-data__";
 	protected $key;
 	protected $value;
 

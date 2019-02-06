@@ -1,8 +1,6 @@
 <?php
 namespace Gt\Cli\Test\Command;
 
-use ArrayIterator;
-use Gt\Cli\Argument\Argument;
 use Gt\Cli\Argument\ArgumentList;
 use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Argument\CommandArgument;
@@ -13,18 +11,16 @@ use Gt\Cli\CliException;
 use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\MissingRequiredParameterValueException;
-use Gt\Cli\Parameter\Parameter;
 use Gt\Cli\Stream;
+use Gt\Cli\Test\Helper\ArgumentMockTestCase;
 use Gt\Cli\Test\Helper\Command\AllParameterTypesCommand;
 use Gt\Cli\Test\Helper\Command\ComboRequiredOptionalParameterCommand;
 use Gt\Cli\Test\Helper\Command\MultipleRequiredParameterCommand;
 use Gt\Cli\Test\Helper\Command\SingleRequiredNamedParameterCommand;
 use Gt\Cli\Test\Helper\Command\TestCommand;
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
-class CommandTest extends TestCase {
+class CommandTest extends ArgumentMockTestCase {
 	public function testSetOutput() {
 		/** @var Stream|MockObject $stream */
 		$stream = $this->createMock(Stream::class);
@@ -299,84 +295,5 @@ class CommandTest extends TestCase {
 		self::assertEquals("test-id", $argumentValueList->get("id"));
 		self::assertEquals("Test name!", $argumentValueList->get("name"));
 		self::assertEquals("test-scaffolding", $argumentValueList->get("framework"));
-	}
-
-	protected function createIteratorMock(
-		string $className,
-		array $items = []
-	):MockObject {
-		$mock = $this->createMock($className);
-		$iterator = new ArrayIterator($items);
-
-		$mock->method("rewind")
-			->willReturnCallback(function()use($iterator) {
-				$iterator->rewind();
-			});
-		$mock->method("current")
-			->willReturnCallback(function()use($iterator) {
-				return $iterator->current();
-			});
-		$mock->method("key")
-			->willReturnCallback(function()use($iterator) {
-				return $iterator->key();
-			});
-		$mock->method("next")
-			->willReturnCallback(function()use($iterator) {
-				$iterator->next();
-			});
-		$mock->method("valid")
-			->willReturnCallback(function()use($iterator) {
-				return $iterator->valid();
-			});
-
-		return $mock;
-	}
-
-	protected function createArgumentListMock(
-		array $items = [],
-		array $longArgs = []
-	):MockObject {
-		$argList = $this->createIteratorMock(
-			ArgumentList::class,
-			$items
-		);
-
-		$argList->method("contains")
-			->willReturnCallback(function(Parameter $param)use($longArgs) {
-				$longOption = $param->getLongOption();
-				foreach($longArgs as $a) {
-					if(is_array($a)) {
-						if(key($a) === $longOption) {
-							return true;
-						}
-					}
-					else {
-						if($a === $longOption) {
-							return true;
-						}
-					}
-				}
-				return false;
-			});
-
-		$argList->method("getValueForParameter")
-			->willReturnCallback(function(Parameter $param)use($longArgs) {
-				$longOption = $param->getLongOption();
-				foreach($longArgs as $a) {
-					if(!is_array($a)) {
-						continue;
-					}
-
-					$key = key($a);
-					if($key !== $longOption) {
-						continue;
-					}
-
-					return $a[$key];
-				}
-				return null;
-			});
-
-		return $argList;
 	}
 }
