@@ -8,8 +8,12 @@ class ArgumentValueList {
 		$this->valueMap[$key] = $value;
 	}
 
-	public function get(string $key):string {
+	public function get(string $key, string $default = null):string {
 		if(!isset($this->valueMap[$key])) {
+			if(!is_null($default)) {
+				return $default;
+			}
+
 			throw new ArgumentValueListNotSetException($key);
 		}
 		return $this->valueMap[$key];
