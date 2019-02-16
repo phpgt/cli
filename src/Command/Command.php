@@ -17,39 +17,27 @@ abstract class Command {
 	/** @var Stream */
 	protected $output;
 
-	protected $name;
-	protected $description = "";
-	/** @var NamedParameter[] */
-	protected $optionalNamedParameterList = [];
-	/** @var NamedParameter[] */
-	protected $requiredNamedParameterList = [];
-	/** @var Parameter[] */
-	protected $optionalParameterList = [];
-	/** @var Parameter[] */
-	protected $requiredParameterList = [];
-
 	public function setOutput(Stream $output = null) {
 		$this->output = $output;
 	}
 
+	abstract public function getName():string;
+
+	abstract public function getDescription():string;
+
+	/** @return  NamedParameter[] */
+	abstract public function getRequiredNamedParameterList():array;
+
+	/** @return  NamedParameter[] */
+	abstract public function getOptionalNamedParameterList():array;
+
+	/** @return  Parameter[] */
+	abstract public function getRequiredParameterList():array;
+
+	/** @return  Parameter[] */
+	abstract public function getOptionalParameterList():array;
+
 	abstract public function run(ArgumentValueList $arguments = null):void;
-
-	public function getName():string {
-		return $this->name;
-	}
-
-	protected function setName(string $name):void {
-		$this->name = $name;
-	}
-
-	public function getDescription():string {
-		return $this->description;
-	}
-
-	protected function setDescription(string $description):void {
-		$this->description = $description;
-	}
-
 
 	public function getUsage():string {
 		$message = "";
@@ -57,18 +45,18 @@ abstract class Command {
 		$message .= "Usage: ";
 		$message .= $this->getName();
 
-		foreach($this->requiredNamedParameterList as $parameter) {
+		foreach($this->getRequiredNamedParameterList() as $parameter) {
 			$message .= " ";
 			$message .= $parameter->getOptionName();
 		}
 
-		foreach($this->optionalNamedParameterList as $parameter) {
+		foreach($this->getOptionalNamedParameterList() as $parameter) {
 			$message .= " [";
 			$message .= $parameter->getOptionName();
 			$message .= "]";
 		}
 
-		foreach($this->requiredParameterList as $parameter) {
+		foreach($this->getRequiredParameterList() as $parameter) {
 			$message .= " --";
 			$message .= $parameter->getLongOption();
 
@@ -82,7 +70,7 @@ abstract class Command {
 			}
 		}
 
-		foreach($this->optionalParameterList as $parameter) {
+		foreach($this->getOptionalParameterList() as $parameter) {
 			$message .= " [--";
 			$message .= $parameter->getLongOption();
 
@@ -103,7 +91,7 @@ abstract class Command {
 
 	public function checkArguments(ArgumentList $argumentList):void {
 		$numRequiredNamedParameters = count(
-			$this->requiredNamedParameterList
+			$this->getRequiredNamedParameterList()
 		);
 
 		$passedNamedArguments = 0;
@@ -120,7 +108,7 @@ abstract class Command {
 			);
 		}
 
-		foreach($this->requiredParameterList as $parameter) {
+		foreach($this->getRequiredParameterList() as $parameter) {
 			if(!$argumentList->contains($parameter)) {
 				throw new MissingRequiredParameterException(
 					$parameter
@@ -140,89 +128,21 @@ abstract class Command {
 		}
 	}
 
-	/**
-	 * @return NamedParameter[]
-	 */
-	public function getRequiredNamedParameterList():array {
-		return $this->requiredNamedParameterList;
-	}
-
-	/**
-	 * @return NamedParameter[]
-	 */
-	public function getOptionalNamedParameterList():array {
-		return $this->optionalNamedParameterList;
-	}
-
-	protected function setRequiredNamedParameter(string $name):void {
-		$this->requiredNamedParameterList []= new NamedParameter(
-			$name
-		);
-	}
-
-	/**
-	 * @return Parameter[]
-	 */
-	public function getOptionalParameterList():array {
-		return $this->optionalParameterList;
-	}
-
-	protected function setOptionalNamedParameter(string $name):void {
-		$this->optionalNamedParameterList []= new NamedParameter(
-			$name
-		);
-	}
-
-	protected function setOptionalParameter(
-		bool $requireValue,
-		string $longOption,
-		string $shortOption = null,
-		string $example = null
-	):void {
-		$this->optionalParameterList []= new Parameter(
-			$requireValue,
-			$longOption,
-			$shortOption,
-			$example
-		);
-	}
-
-	/**
-	 * @return Parameter[]
-	 */
-	public function getRequiredParameterList():array {
-		return $this->requiredParameterList;
-	}
-
-	protected function setRequiredParameter(
-		bool $requireValue,
-		string $longOption,
-		string $shortOption = null,
-		string $example = null
-	):void {
-		$this->requiredParameterList []= new Parameter(
-			$requireValue,
-			$longOption,
-			$shortOption,
-			$example
-		);
-	}
-
 	public function getArgumentValueList(
 		ArgumentList $arguments
 	):ArgumentValueList {
 		$namedParameterIndex = 0;
 		/** @var NamedParameter[] */
 		$namedParameterList = array_merge(
-			$this->requiredNamedParameterList,
-			$this->optionalNamedParameterList
+			$this->getRequiredNamedParameterList(),
+			$this->getOptionalNamedParameterList()
 		);
 
 		$parameterIndex = 0;
 		/** @var Parameter[] $parameterList */
 		$parameterList = array_merge(
-			$this->requiredParameterList,
-			$this->optionalParameterList
+			$this->getRequiredParameterList(),
+			$this->getOptionalParameterList()
 		);
 
 		$argumentValueList = new ArgumentValueList();
