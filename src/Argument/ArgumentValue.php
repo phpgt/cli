@@ -2,16 +2,17 @@
 namespace Gt\Cli\Argument;
 
 class ArgumentValue {
+	protected $key;
 	protected $valueList;
 	protected $queueIndex;
 
-	public function __construct(string $value) {
+	public function __construct(string $key) {
+		$this->key = $key;
 		$this->valueList = [];
 		$this->queueIndex = 0;
-		$this->push($value);
 	}
 
-	public function push(string $value):void {
+	public function push(string $value = null):void {
 		$this->valueList []= $value;
 	}
 
