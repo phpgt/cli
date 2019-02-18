@@ -11,6 +11,7 @@ use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Parameter\NamedParameter;
 use Gt\Cli\Parameter\Parameter;
+use Gt\Cli\Parameter\UserParameter;
 use Gt\Cli\Stream;
 
 abstract class Command {
@@ -138,7 +139,6 @@ abstract class Command {
 			$this->getOptionalNamedParameterList()
 		);
 
-		$parameterIndex = 0;
 		/** @var Parameter[] $parameterList */
 		$parameterList = array_merge(
 			$this->getRequiredParameterList(),
@@ -155,7 +155,7 @@ abstract class Command {
 				/** @var NamedParameter $parameter */
 				$parameter = $namedParameterList[
 					$namedParameterIndex
-				];
+				] ?? null;
 
 				if(is_null($parameter)) {
 					$argumentValueList->set(
@@ -173,17 +173,29 @@ abstract class Command {
 				$namedParameterIndex++;
 			}
 			elseif($argument instanceof Argument) {
-				/** @var Parameter $parameter */
-				$parameter = $parameterList[
-					$parameterIndex
-				];
+				/** @var Parameter|null $parameter */
+				$parameter = null;
+
+				foreach($parameterList as $parameterToCheck) {
+					$argumentKey = $argument->getKey();
+					if($argumentKey === $parameterToCheck->getLongOption()
+					|| $argumentKey === $parameterToCheck->getShortOption()) {
+						$parameter = $parameterToCheck;
+						break;
+					};
+				}
+
+				if(is_null($parameter)) {
+					$parameter = new UserParameter(
+						!empty($argument->getValue()),
+						$argument->getKey()
+					);
+				}
 
 				$argumentValueList->set(
 					$parameter->getLongOption(),
 					$argument->getValue()
 				);
-
-				$parameterIndex++;
 			}
 		}
 
