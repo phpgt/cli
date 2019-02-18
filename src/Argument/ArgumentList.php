@@ -7,6 +7,8 @@ use Iterator;
 class ArgumentList implements Iterator {
 	const DEFAULT_COMMAND = "help";
 
+	/** @var DefaultCommandArgument */
+	protected $defaultCommandArgument;
 	protected $script;
 	/** @var Argument[] */
 	protected $argumentList = [];
@@ -21,11 +23,25 @@ class ArgumentList implements Iterator {
 		return $this->argumentList[0]->getValue();
 	}
 
+	public function setDefaultCommand(string $commandName):void {
+		$this->defaultCommandArgument->set(
+			$commandName
+		);
+	}
+
 	protected function buildArgumentList(array $arguments):void {
 		$commandArgument = array_shift($arguments);
-		$this->argumentList []= new CommandArgument(
-			$commandArgument ?? self::DEFAULT_COMMAND
-		);
+		if($commandArgument) {
+			$this->argumentList []= new CommandArgument(
+				$commandArgument
+			);
+		}
+		else {
+			$this->defaultCommandArgument = new DefaultCommandArgument(
+				self::DEFAULT_COMMAND
+			);
+			$this->argumentList []= $this->defaultCommandArgument;
+		}
 
 		$skipNextArgument = false;
 

@@ -41,6 +41,10 @@ class Application {
 		$this->stream->setStream($in, $out, $error);
 	}
 
+	public function setDefaultCommand(string $commandName):void {
+		$this->arguments->setDefaultCommand($commandName);
+	}
+
 	public function run():void {
 		$command = null;
 
