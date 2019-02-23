@@ -12,6 +12,10 @@ class ArgumentValue {
 		$this->queueIndex = 0;
 	}
 
+	public function __toString():string {
+		return implode(" ", $this->getAll());
+	}
+
 	public function push(string $value = null):void {
 		$this->valueList []= $value;
 	}
