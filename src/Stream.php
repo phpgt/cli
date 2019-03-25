@@ -23,13 +23,13 @@ class Stream {
 		string $error = null
 	) {
 		if(is_null($in)) {
-			$in = "php://memory";
+			$in = "php://stdin";
 		}
 		if(is_null($out)) {
-			$out = "php://memory";
+			$out = "php://stdout";
 		}
 		if(is_null($error)) {
-			$error = "php://memory";
+			$error = "php://stderr";
 		}
 
 		$this->setStream($in, $out, $error);
