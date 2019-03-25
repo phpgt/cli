@@ -17,7 +17,21 @@ class Stream {
 	/** @var SplFileObject */
 	protected $currentStream;
 
-	public function __construct(string $in, string $out, string $error) {
+	public function __construct(
+		string $in = null,
+		string $out = null,
+		string $error = null
+	) {
+		if(is_null($in)) {
+			$in = "php://memory";
+		}
+		if(is_null($out)) {
+			$out = "php://memory";
+		}
+		if(is_null($error)) {
+			$error = "php://memory";
+		}
+
 		$this->setStream($in, $out, $error);
 	}
 
