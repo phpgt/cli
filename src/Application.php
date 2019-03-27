@@ -41,16 +41,13 @@ class Application {
 		$this->stream->setStream($in, $out, $error);
 	}
 
-	public function setDefaultCommand(string $commandName):void {
-		$this->arguments->setDefaultCommand($commandName);
-	}
-
 	public function run():void {
 		$command = null;
+		$exception = null;
 
 		if(is_null($this->arguments)) {
 			$this->stream->writeLine(
-				"Application has no commands",
+				"Application has received no commands",
 				Stream::ERROR
 			);
 			return;
@@ -70,11 +67,23 @@ class Application {
 			);
 			$command->run($argumentValueList);
 		}
+		catch(MissingRequiredParameterException $exception) {
+			$message = "Error - Missing required parameter: "
+				. $exception->getMessage();
+
+			$this->stream->writeLine(
+				$message,
+				Stream::ERROR
+			);
+		}
 		catch(CliException $exception) {
 			$this->stream->writeLine(
 				$exception->getMessage(),
 				Stream::ERROR
 			);
+		}
+
+		if($exception) {
 			$this->stream->writeLine(
 				$command->getUsage(),
 				Stream::ERROR
