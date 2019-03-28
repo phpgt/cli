@@ -12,23 +12,24 @@ use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Argument\ArgumentList;
 
 class Application {
-	protected $applicationName;
+	protected $description;
 	protected $arguments;
 	protected $commands;
 	protected $stream;
 	protected $helpCommand;
 
 	public function __construct(
-		string $applicationName,
+		string $description,
 		ArgumentList $arguments = null,
 		Command...$commands
 	) {
-		$this->applicationName = $applicationName;
+		$this->description = $description;
 		$this->arguments = $arguments;
 		$this->commands = $commands;
 
 		$this->helpCommand = new HelpCommand(
-			$this->applicationName,
+			$this->description,
+			$arguments->getScript(),
 			$this->commands
 		);
 		$this->commands []= $this->helpCommand;
