@@ -20,6 +20,10 @@ class ArgumentValue {
 		$this->valueList []= $value;
 	}
 
+	public function getKey():string {
+		return $this->key;
+	}
+
 	public function get():?string {
 		$value = $this->valueList[$this->queueIndex];
 		$this->queueIndex++;

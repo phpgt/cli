@@ -59,11 +59,18 @@ class ArgumentValueList implements Iterator {
 
 	/** @link https://php.net/manual/en/iterator.current.php */
 	public function current() {
-		return $this->valueList[$this->iteratorIndex];
+		if(!$this->iteratorIndex) {
+			$this->rewind();
+		}
+		return $this->valueList[$this->iteratorIndex] ?? null;
 	}
 
 	/** @link https://php.net/manual/en/iterator.next.php */
 	public function next() {
 		$this->iteratorIndex++;
+	}
+
+	public function first() {
+		return $this->valueList[0] ?? null;
 	}
 }

@@ -53,6 +53,9 @@ class HelpCommand extends Command {
 	}
 
 	public function run(ArgumentValueList $arguments = null): void {
+		$command = (string)$arguments->get("command", "*");
+		var_dump($command);die();
+
 		$this->writeLine($this->applicationName);
 		$this->writeLine();
 

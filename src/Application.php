@@ -1,6 +1,7 @@
 <?php
 namespace Gt\Cli;
 
+use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\Command\Command;
 use Gt\Cli\Command\CommandException;
@@ -15,6 +16,7 @@ class Application {
 	protected $arguments;
 	protected $commands;
 	protected $stream;
+	protected $helpCommand;
 
 	public function __construct(
 		string $applicationName,
@@ -25,10 +27,11 @@ class Application {
 		$this->arguments = $arguments;
 		$this->commands = $commands;
 
-		$this->commands []= new HelpCommand(
+		$this->helpCommand = new HelpCommand(
 			$this->applicationName,
 			$this->commands
 		);
+		$this->commands []= $this->helpCommand;
 
 		$this->stream = new Stream(
 			"php://stdin",
@@ -61,6 +64,17 @@ class Application {
 			$argumentValueList = $command->getArgumentValueList(
 				$this->arguments
 			);
+
+			$firstArgument = $argumentValueList->first();
+			if($firstArgument) {
+				switch($firstArgument->getKey()) {
+				case "help":
+					$helpArgs = new ArgumentValueList();
+					$helpArgs->set("command", $commandName);
+					$this->helpCommand->run($helpArgs);
+					break;
+				}
+			}
 
 			$command->checkArguments(
 				$this->arguments
