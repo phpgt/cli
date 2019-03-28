@@ -3,28 +3,50 @@ namespace Gt\Cli\Test\Helper\Command;
 
 use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Command\Command;
+use Gt\Cli\Parameter\NamedParameter;
+use Gt\Cli\Parameter\Parameter;
 
 class ComboRequiredOptionalParameterCommand extends Command {
-	public function __construct() {
-		$this->setName("combo-required-optional-parameter-command");
-		$this->setDescription("A test class for testing purposes.");
+	public function run(ArgumentValueList $arguments = null):void {
+	}
 
-		$this->setRequiredNamedParameter("id");
-		$this->setOptionalNamedParameter("name");
+	public function getName():string {
+		return "combo-required-optional-parameter-command";
+	}
 
-		$this->setRequiredParameter(
+	public function getDescription():string {
+		return "A test class for testing purposes.";
+	}
+
+	/** @return  NamedParameter[] */
+	public function getRequiredNamedParameterList():array {
+		return [
+			new NamedParameter("id"),
+		];
+	}
+
+	/** @return  NamedParameter[] */
+	public function getOptionalNamedParameterList():array {
+		return [
+			new NamedParameter("name"),
+		];
+	}
+
+	/** @return  Parameter[] */
+	public function getRequiredParameterList():array {
+		return [
 			true,
 			"type",
 			"t"
-		);
+		];
+	}
 
-		$this->setOptionalParameter(
+	/** @return  Parameter[] */
+	public function getOptionalParameterList():array {
+		return [
 			false,
 			"verbose",
 			"v"
-		);
-	}
-
-	public function run(ArgumentValueList $arguments = null):void {
+		];
 	}
 }

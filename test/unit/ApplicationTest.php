@@ -125,6 +125,8 @@ class ApplicationTest extends ArgumentMockTestCase {
 		$idArgument->method("getValue")
 			->willReturn("abcde");
 		$mustHaveValueArgument = self::createMock(LongOptionArgument::class);
+		$mustHaveValueArgument->method("getKey")
+			->willReturn("must-have-value");
 		$mustHaveValueArgument->method("getValue")
 			->willReturn("1234");
 
@@ -188,7 +190,7 @@ class ApplicationTest extends ArgumentMockTestCase {
 	):void {
 		$streamPath = $this->getStreamPathByName($streamName);
 		$streamContents = file_get_contents($streamPath);
-		self::assertContains(
+		self::assertStringContainsString(
 			$message,
 			$streamContents,
 			"Stream should contain message."
@@ -200,7 +202,7 @@ class ApplicationTest extends ArgumentMockTestCase {
 	):void {
 		$streamPath = $this->getStreamPathByName($streamName);
 		$streamContents = trim(file_get_contents($streamPath));
-		self::assertEmpty($streamContents);
+		self::assertEmpty($streamContents, "Contents: \"$streamContents\"");
 	}
 
 	protected function getStreamPathByName(string $name):string {
