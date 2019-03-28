@@ -65,7 +65,7 @@ abstract class Command {
 				$message .= "|-$short";
 			}
 
-			if($parameter->isValueRequired()) {
+			if($parameter->takesValue()) {
 				$message .= " ";
 				$message .= $parameter->getExample();
 			}
@@ -79,7 +79,7 @@ abstract class Command {
 				$message .= "|-$short";
 			}
 
-			if($parameter->isValueRequired()) {
+			if($parameter->takesValue()) {
 				$message .= " ";
 				$message .= $parameter->getExample();
 			}
@@ -116,7 +116,7 @@ abstract class Command {
 				);
 			}
 
-			if($parameter->isValueRequired()) {
+			if($parameter->takesValue()) {
 				$value = $argumentList->getValueForParameter(
 					$parameter
 				);

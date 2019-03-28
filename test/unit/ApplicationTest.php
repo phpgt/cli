@@ -19,7 +19,7 @@ class ApplicationTest extends ArgumentMockTestCase {
 	protected $outPath;
 	protected $errPath;
 
-	public function setUp() {
+	public function setUp():void {
 		$this->tmp = implode(DIRECTORY_SEPARATOR, [
 			sys_get_temp_dir(),
 			"phpgt",
@@ -37,7 +37,7 @@ class ApplicationTest extends ArgumentMockTestCase {
 		touch($this->errPath);
 	}
 
-	public function tearDown() {
+	public function tearDown():void {
 		$fileList = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator(
 				$this->tmp,
@@ -67,7 +67,7 @@ class ApplicationTest extends ArgumentMockTestCase {
 		$application->run();
 
 		self::assertStreamContains(
-			"Application received no arguments",
+			"Application has received no commands",
 			Stream::ERROR
 		);
 		self::assertStreamEmpty(Stream::OUT);

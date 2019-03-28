@@ -3,28 +3,18 @@ namespace Gt\Cli\Test\Helper\Command;
 
 use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Command\Command;
+use Gt\Cli\Parameter\NamedParameter;
+use Gt\Cli\Parameter\Parameter;
 
 class TestCommand extends Command {
+	protected $prefix;
+
 	public function __construct(string $prefix = null) {
 		if(!is_null($prefix)) {
 			$prefix .= "-";
 		}
 
-		$this->setName("{$prefix}test");
-		$this->setDescription("A test command for unit testing");
-
-		$this->setRequiredNamedParameter("id");
-		$this->setOptionalNamedParameter("option");
-		$this->setRequiredParameter(
-			true,
-			"must-have-value",
-			"m"
-		);
-		$this->setOptionalParameter(
-			false,
-			"no-value",
-			"n"
-		);
+		$this->prefix = $prefix;
 	}
 
 	public function run(ArgumentValueList $arguments = null):void {
@@ -55,5 +45,49 @@ class TestCommand extends Command {
 		else {
 			$this->writeLine("No-value argument not set");
 		}
+	}
+
+	public function getName():string {
+		return "{$this->prefix}test";
+	}
+
+	public function getDescription():string {
+		return "A test command for unit testing";
+	}
+
+	/** @return  NamedParameter[] */
+	public function getRequiredNamedParameterList():array {
+		return [
+			new NamedParameter("id"),
+		];
+	}
+
+	/** @return  NamedParameter[] */
+	public function getOptionalNamedParameterList():array {
+		return [
+			new NamedParameter("option"),
+		];
+	}
+
+	/** @return  Parameter[] */
+	public function getRequiredParameterList():array {
+		return [
+			new Parameter(
+				true,
+				"must-have-value",
+				"m"
+			),
+		];
+	}
+
+	/** @return  Parameter[] */
+	public function getOptionalParameterList():array {
+		return [
+			new Parameter(
+				false,
+				"no-value",
+				"n"
+			),
+		];
 	}
 }

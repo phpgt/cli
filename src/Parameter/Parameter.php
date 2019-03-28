@@ -2,18 +2,18 @@
 namespace Gt\Cli\Parameter;
 
 class Parameter {
-	protected $requireValue;
+	protected $takesValue;
 	protected $longOption;
 	protected $shortOption;
 	protected $example;
 
 	public function __construct(
-		bool $requireValue,
+		bool $takesValue,
 		string $longOption,
 		string $shortOption = null,
 		string $example = null
 	) {
-		$this->requireValue = $requireValue;
+		$this->takesValue = $takesValue;
 		$this->longOption = $longOption;
 		$this->shortOption = $shortOption;
 		$this->example = $example;
@@ -39,8 +39,8 @@ class Parameter {
 		return $this->shortOption;
 	}
 
-	public function isValueRequired():bool {
-		return $this->requireValue;
+	public function takesValue():bool {
+		return $this->takesValue;
 	}
 
 	public function getExample():string {

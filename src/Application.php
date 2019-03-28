@@ -83,7 +83,7 @@ class Application {
 			);
 		}
 
-		if($exception) {
+		if($exception && $command) {
 			$this->stream->writeLine(
 				$command->getUsage(),
 				Stream::ERROR
