@@ -264,6 +264,8 @@ class CommandTest extends ArgumentMockTestCase {
 		$nameArgument->method("getValue")
 			->willReturn("Test name!");
 		$frameworkArgument = self::createMock(LongOptionArgument::class);
+		$frameworkArgument->method("getKey")
+			->willReturn("framework");
 		$frameworkArgument->method("getValue")
 			->willReturn("test-scaffolding");
 		$exampleArgument = self::createMock(LongOptionArgument::class);

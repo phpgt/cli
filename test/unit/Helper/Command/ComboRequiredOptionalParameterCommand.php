@@ -35,18 +35,22 @@ class ComboRequiredOptionalParameterCommand extends Command {
 	/** @return  Parameter[] */
 	public function getRequiredParameterList():array {
 		return [
-			true,
-			"type",
-			"t"
+			new Parameter(
+				true,
+				"type",
+				"t"
+			),
 		];
 	}
 
 	/** @return  Parameter[] */
 	public function getOptionalParameterList():array {
 		return [
-			false,
-			"verbose",
-			"v"
+			new Parameter(
+				false,
+				"verbose",
+				"v"
+			),
 		];
 	}
 }

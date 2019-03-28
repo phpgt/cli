@@ -22,14 +22,13 @@ class MultipleRequiredParameterCommand extends Command {
 	public function getRequiredNamedParameterList():array {
 		return [
 			new NamedParameter("id"),
+			new NamedParameter("name"),
 		];
 	}
 
 	/** @return  NamedParameter[] */
 	public function getOptionalNamedParameterList():array {
-		return [
-			new NamedParameter("name"),
-		];
+		return [];
 	}
 
 	/** @return  Parameter[] */
