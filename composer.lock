@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f578c1e804673d4b434b2b78e118afd4",
+    "content-hash": "36433ce43d1ff2f86ed8ea2c597981ab",
     "packages": [
         {
             "name": "phpgt/daemon",
@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "/home/g105b/Code/PhpGt/Daemon",
-                "reference": "bf307226120eef303aa17ebed14bb696c33fb1a1"
+                "reference": "c0b713bdf4ca46c69f08e5576a167617c82bcb65"
             },
             "require": {
                 "php": ">=7.2"
