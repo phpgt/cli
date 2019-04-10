@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5febd288a0e6303fbdf2d4fd15bf908e",
+    "content-hash": "f578c1e804673d4b434b2b78e118afd4",
     "packages": [
         {
             "name": "phpgt/daemon",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PhpGt/Daemon.git",
-                "reference": "bf307226120eef303aa17ebed14bb696c33fb1a1"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/Daemon/zipball/bf307226120eef303aa17ebed14bb696c33fb1a1",
-                "reference": "bf307226120eef303aa17ebed14bb696c33fb1a1",
-                "shasum": ""
+                "type": "path",
+                "url": "/home/g105b/Code/PhpGt/Daemon",
+                "reference": "bf307226120eef303aa17ebed14bb696c33fb1a1"
             },
             "require": {
                 "php": ">=7.2"
@@ -32,9 +26,12 @@
                     "Gt\\Daemon\\": "./src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "Background script execution with cross-platform compatible streaming.",
-            "time": "2019-03-27T22:22:48+00:00"
+            "autoload-dev": {
+                "psr-4": {
+                    "Gt\\Daemon\\Test\\": "./test/unit"
+                }
+            },
+            "description": "Background script execution with cross-platform compatible streaming."
         }
     ],
     "packages-dev": [
