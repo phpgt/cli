@@ -39,6 +39,7 @@ class Application {
 			"php://stdout",
 			"php://stderr"
 		);
+		$this->helpCommand->setOutput($this->stream);
 	}
 
 	public function setStream($in, $out, $error) {
@@ -73,7 +74,11 @@ class Application {
 					$helpArgs = new ArgumentValueList();
 					$helpArgs->set("command", $commandName);
 					$this->helpCommand->run($helpArgs);
-					break;
+					return;
+
+				case "version":
+					$this->stream->writeLine($this->getVersion());
+					return;
 				}
 			}
 
@@ -116,5 +121,48 @@ class Application {
 		}
 
 		throw new InvalidCommandException($name);
+	}
+
+	protected function getVersion():string {
+		$version = "Version number not found";
+
+		$dir = __DIR__;
+		do {
+			$dir = dirname($dir);
+			$files = scandir($dir);
+		}
+		while(!in_array("vendor", $files) || strlen($dir) <= 4);
+
+		$installedJson = implode(DIRECTORY_SEPARATOR, [
+			$dir,
+			"vendor",
+			"composer",
+			"installed.json",
+		]);
+		if(!is_file($installedJson)) {
+			return $version;
+		}
+
+		$installed = json_decode(file_get_contents($installedJson));
+
+		$scriptName = $this->arguments->getScript();
+		$scriptName = pathinfo($scriptName, PATHINFO_FILENAME);
+
+		foreach($installed as $item) {
+			$binArray = $item->bin ?? [];
+			if(!empty($binArray))
+var_dump($binArray);
+			foreach($binArray as $bin) {
+				$bin = pathinfo($bin, PATHINFO_FILENAME);
+				if($bin === $scriptName) {
+					$version = $item->version;
+					break;
+				}
+			}
+		}
+
+		var_dump($version);die();
+
+		return $version;
 	}
 }
