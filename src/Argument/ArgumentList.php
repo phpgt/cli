@@ -17,6 +17,10 @@ class ArgumentList implements Iterator {
 		$this->buildArgumentList($arguments);
 	}
 
+	public function getScript():string {
+		return $this->script;
+	}
+
 	public function getCommandName():string {
 		return $this->argumentList[0]->getValue();
 	}

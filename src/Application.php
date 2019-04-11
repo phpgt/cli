@@ -1,6 +1,7 @@
 <?php
 namespace Gt\Cli;
 
+use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\Command\Command;
 use Gt\Cli\Command\CommandException;
@@ -11,30 +12,34 @@ use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Argument\ArgumentList;
 
 class Application {
-	protected $applicationName;
+	protected $description;
 	protected $arguments;
 	protected $commands;
 	protected $stream;
+	protected $helpCommand;
 
 	public function __construct(
-		string $applicationName,
+		string $description,
 		ArgumentList $arguments = null,
 		Command...$commands
 	) {
-		$this->applicationName = $applicationName;
+		$this->description = $description;
 		$this->arguments = $arguments;
 		$this->commands = $commands;
 
-		$this->commands []= new HelpCommand(
-			$this->applicationName,
+		$this->helpCommand = new HelpCommand(
+			$this->description,
+			$arguments->getScript(),
 			$this->commands
 		);
+		$this->commands []= $this->helpCommand;
 
 		$this->stream = new Stream(
 			"php://stdin",
 			"php://stdout",
 			"php://stderr"
 		);
+		$this->helpCommand->setOutput($this->stream);
 	}
 
 	public function setStream($in, $out, $error) {
@@ -61,6 +66,21 @@ class Application {
 			$argumentValueList = $command->getArgumentValueList(
 				$this->arguments
 			);
+
+			$firstArgument = $argumentValueList->first();
+			if($firstArgument) {
+				switch($firstArgument->getKey()) {
+				case "help":
+					$helpArgs = new ArgumentValueList();
+					$helpArgs->set("command", $commandName);
+					$this->helpCommand->run($helpArgs);
+					return;
+
+				case "version":
+					$this->stream->writeLine($this->getVersion());
+					return;
+				}
+			}
 
 			$command->checkArguments(
 				$this->arguments
@@ -101,5 +121,48 @@ class Application {
 		}
 
 		throw new InvalidCommandException($name);
+	}
+
+	protected function getVersion():string {
+		$version = "Version number not found";
+
+		$dir = __DIR__;
+		do {
+			$dir = dirname($dir);
+			$files = scandir($dir);
+		}
+		while(!in_array("vendor", $files) || strlen($dir) <= 4);
+
+		$installedJson = implode(DIRECTORY_SEPARATOR, [
+			$dir,
+			"vendor",
+			"composer",
+			"installed.json",
+		]);
+		if(!is_file($installedJson)) {
+			return $version;
+		}
+
+		$installed = json_decode(file_get_contents($installedJson));
+
+		$scriptName = $this->arguments->getScript();
+		$scriptName = pathinfo($scriptName, PATHINFO_FILENAME);
+
+		foreach($installed as $item) {
+			$binArray = $item->bin ?? [];
+			if(!empty($binArray))
+var_dump($binArray);
+			foreach($binArray as $bin) {
+				$bin = pathinfo($bin, PATHINFO_FILENAME);
+				if($bin === $scriptName) {
+					$version = $item->version;
+					break;
+				}
+			}
+		}
+
+		var_dump($version);die();
+
+		return $version;
 	}
 }

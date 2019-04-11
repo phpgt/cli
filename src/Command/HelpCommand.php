@@ -6,18 +6,23 @@ use Gt\Cli\Parameter\NamedParameter;
 use Gt\Cli\Parameter\Parameter;
 
 class HelpCommand extends Command {
-	protected $applicationName;
+	const ALL_COMMANDS = "*";
+
+	protected $applicationDescription;
 	/** @var Command[] */
 	protected $applicationCommandList;
+	protected $scriptName;
 
 	/**
 	 * @param Command[] $applicationCommandList
 	 */
 	public function __construct(
-		string $applicationName,
+		string $applicationDescription,
+		string $scriptName,
 		array $applicationCommandList = []
 	) {
-		$this->applicationName = $applicationName;
+		$this->applicationDescription = $applicationDescription;
+		$this->scriptName = $scriptName;
 		$this->applicationCommandList = $applicationCommandList;
 		$this->applicationCommandList []= $this;
 	}
@@ -53,17 +58,35 @@ class HelpCommand extends Command {
 	}
 
 	public function run(ArgumentValueList $arguments = null): void {
-		$this->writeLine($this->applicationName);
-		$this->writeLine();
+		$command = (string)$arguments->get(
+			"command",
+			self::ALL_COMMANDS
+		);
 
-		if(empty($this->applicationCommandList)) {
-			$this->writeLine(
-				"There are no commands available"
-			);
-			return;
+		if($command === self::ALL_COMMANDS) {
+			$output = $this->getHelpForAllCommands();
+		}
+		else {
+			$output = $this->getHelpForCommand($command);
 		}
 
-		$this->writeLine("Available commands:");
+		$this->writeLine($output);
+	}
+
+	protected function getHelpForAllCommands():string {
+		$output = "";
+		$output .= $this->applicationDescription;
+		$output .= PHP_EOL;
+		$output .= PHP_EOL;
+
+		if(empty($this->applicationCommandList)) {
+			$output .= "There are no commands available";
+			$output .= PHP_EOL;
+			return $output;
+		}
+
+		$output .= "Available commands:";
+		$output .= PHP_EOL;
 
 		$maxNameLength = 0;
 		foreach($this->applicationCommandList as $command) {
@@ -74,14 +97,44 @@ class HelpCommand extends Command {
 		}
 
 		foreach($this->applicationCommandList as $command) {
-			$this->writeLine(" • " .
-				str_pad($command->getName(), $maxNameLength, " ")
-				. "\t"
-				. $command->getDescription()
+			$output .= " • ";
+			$output .= str_pad(
+				$command->getName(),
+				$maxNameLength,
+				" "
 			);
+			$output .= "\t";
+			$output .= $command->getDescription();
+			$output .= PHP_EOL;
 		}
 
-		$this->writeLine();
-		$this->writeLine("Type gt help COMMAND to get help for that command");
+		$output .= PHP_EOL;
+		$output .= "Type `{$this->scriptName} help COMMAND` to get help for that command.";
+		return $output;
+	}
+
+	protected function getHelpForCommand(string $commandName):string {
+		$output = "";
+
+		$command = null;
+		foreach($this->applicationCommandList as $command) {
+			if($command->getName() !== $commandName) {
+				continue;
+			}
+
+			break;
+		}
+
+		if(!$command) {
+			return "No help for command `$commandName`." . PHP_EOL;
+		}
+
+		$output .= $command->getName();
+		$output .= ": ";
+		$output .= $command->getDescription();
+		$output .= PHP_EOL;
+		$output .= $command->getUsage();
+
+		return $output;
 	}
 }
