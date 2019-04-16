@@ -150,7 +150,7 @@ abstract class Command {
 					if(isset($keyParts[1])) {
 						$message .= str_repeat(" ", 2);
 						$message .= $keyParts[1];
-						$message .= ",";
+						$message .= ", ";
 					}
 
 					$message .= $keyParts[0];
