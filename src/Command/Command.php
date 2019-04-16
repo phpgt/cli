@@ -46,15 +46,29 @@ abstract class Command {
 		$message .= "Usage: ";
 		$message .= $this->getName();
 
+		$documentation = [];
+
 		foreach($this->getRequiredNamedParameterList() as $parameter) {
 			$message .= " ";
 			$message .= $parameter->getOptionName();
+
+			$paramDocumentation = $parameter->getDocumentation();
+			if(!empty($paramDocumentation)) {
+				$documentation[$parameter->getOptionName()] =
+					$paramDocumentation;
+			}
 		}
 
 		foreach($this->getOptionalNamedParameterList() as $parameter) {
 			$message .= " [";
 			$message .= $parameter->getOptionName();
 			$message .= "]";
+
+			$paramDocumentation = $parameter->getDocumentation();
+			if(!empty($paramDocumentation)) {
+				$documentation[$parameter->getOptionName()] =
+					"(Optional) " . $paramDocumentation;
+			}
 		}
 
 		foreach($this->getRequiredParameterList() as $parameter) {
@@ -67,7 +81,17 @@ abstract class Command {
 
 			if($parameter->takesValue()) {
 				$message .= " ";
-				$message .= $parameter->getExample();
+				$message .= $parameter->getExampleValue();
+			}
+
+			$paramDocumentation = $parameter->getDocumentation();
+			if(!empty($paramDocumentation)) {
+				$paramDocumentationKey = "--" . $parameter->getLongOption();
+				if($short) {
+					$paramDocumentationKey .= "|-" . $short;
+				}
+				$documentation[$paramDocumentationKey] =
+					$paramDocumentation;
 			}
 		}
 
@@ -81,10 +105,60 @@ abstract class Command {
 
 			if($parameter->takesValue()) {
 				$message .= " ";
-				$message .= $parameter->getExample();
+				$message .= $parameter->getExampleValue();
 			}
 
 			$message .= "]";
+
+			$paramDocumentation = $parameter->getDocumentation();
+			if(!empty($paramDocumentation)) {
+				$paramDocumentationKey = "--" . $parameter->getLongOption();
+				if($short) {
+					$paramDocumentationKey .= "|-" . $short;
+				}
+				$documentation[$paramDocumentationKey] =
+					"(Optional) " . $paramDocumentation;
+			}
+		}
+
+		if(!empty($documentation)) {
+			$message .= PHP_EOL;
+			$message .= PHP_EOL;
+
+			foreach($documentation as $key => $docString) {
+				$wrappedDocs = wordwrap($docString, 55);
+				$wrappedDocs = explode("\n", $wrappedDocs);
+				foreach($wrappedDocs as $i => $line) {
+					if($i === 0) {
+						continue;
+					}
+
+					$wrappedDocs[$i] = "\t\t\t" . $line;
+				}
+				$wrappedDocs = implode("\n", $wrappedDocs);
+
+				if(!strstr($key, "-")) {
+					$message .= str_repeat(" ", 6);
+					$message .= $key;
+					$message .= "\t\t";
+					$message .= $wrappedDocs;
+					$message .= PHP_EOL;
+				}
+				else {
+					$keyParts = explode("|", $key);
+					if(isset($keyParts[1])) {
+						$message .= str_repeat(" ", 2);
+						$message .= $keyParts[1];
+						$message .= ",";
+					}
+
+					$message .= $keyParts[0];
+					$message .= "\t\t";
+					$message .= $wrappedDocs;
+
+					$message .= PHP_EOL;
+				}
+			}
 		}
 
 		return $message;

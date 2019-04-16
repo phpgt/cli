@@ -5,18 +5,21 @@ class Parameter {
 	protected $takesValue;
 	protected $longOption;
 	protected $shortOption;
-	protected $example;
+	protected $documentation;
+	protected $exampleValue;
 
 	public function __construct(
 		bool $takesValue,
 		string $longOption,
 		string $shortOption = null,
-		string $example = null
+		string $documentation = null,
+		string $exampleValue = null
 	) {
 		$this->takesValue = $takesValue;
 		$this->longOption = $longOption;
 		$this->shortOption = $shortOption;
-		$this->example = $example;
+		$this->documentation = $documentation;
+		$this->exampleValue = $exampleValue;
 	}
 
 	public function __toString():string {
@@ -43,8 +46,12 @@ class Parameter {
 		return $this->takesValue;
 	}
 
-	public function getExample():string {
-		return $this->example
-			?? strtoupper($this->longOption) . "_VALUE";
+	public function getDocumentation():string {
+		return $this->documentation ?? "";
+	}
+
+	public function getExampleValue():string {
+		return $this->exampleValue
+			?? strtoupper($this->longOption);
 	}
 }
