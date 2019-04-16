@@ -27,6 +27,22 @@ class HelpCommand extends Command {
 		$this->applicationCommandList []= $this;
 	}
 
+	public function run(ArgumentValueList $arguments = null): void {
+		$command = (string)$arguments->get(
+			"command",
+			self::ALL_COMMANDS
+		);
+
+		if($command === self::ALL_COMMANDS) {
+			$output = $this->getHelpForAllCommands();
+		}
+		else {
+			$output = $this->getHelpForCommand($command);
+		}
+
+		$this->writeLine($output);
+	}
+
 	public function getName():string {
 		return "help";
 	}
@@ -55,22 +71,6 @@ class HelpCommand extends Command {
 	/** @return  Parameter[] */
 	public function getOptionalParameterList():array {
 		return [];
-	}
-
-	public function run(ArgumentValueList $arguments = null): void {
-		$command = (string)$arguments->get(
-			"command",
-			self::ALL_COMMANDS
-		);
-
-		if($command === self::ALL_COMMANDS) {
-			$output = $this->getHelpForAllCommands();
-		}
-		else {
-			$output = $this->getHelpForCommand($command);
-		}
-
-		$this->writeLine($output);
 	}
 
 	protected function getHelpForAllCommands():string {
@@ -133,7 +133,7 @@ class HelpCommand extends Command {
 		$output .= ": ";
 		$output .= $command->getDescription();
 		$output .= PHP_EOL;
-		$output .= $command->getUsage();
+		$output .= $command->getUsage(true);
 
 		return $output;
 	}

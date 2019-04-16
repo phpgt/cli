@@ -40,7 +40,7 @@ abstract class Command {
 
 	abstract public function run(ArgumentValueList $arguments = null):void;
 
-	public function getUsage():string {
+	public function getUsage(bool $includeDocumentation = false):string {
 		$message = "";
 
 		$message .= "Usage: ";
@@ -121,7 +121,8 @@ abstract class Command {
 			}
 		}
 
-		if(!empty($documentation)) {
+		if($includeDocumentation
+		&& !empty($documentation)) {
 			$message .= PHP_EOL;
 			$message .= PHP_EOL;
 
