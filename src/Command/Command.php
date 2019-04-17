@@ -147,13 +147,17 @@ abstract class Command {
 				}
 				else {
 					$keyParts = explode("|", $key);
+					$message .= str_repeat(" ", 2);
 					if(isset($keyParts[1])) {
-						$message .= str_repeat(" ", 2);
 						$message .= $keyParts[1];
 						$message .= ", ";
 					}
 
 					$message .= $keyParts[0];
+					if(!isset($keyParts[1])) {
+						$message .= str_repeat(" ", 4);
+					}
+
 					$message .= "\t\t";
 					$message .= $wrappedDocs;
 
