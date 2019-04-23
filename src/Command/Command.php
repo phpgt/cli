@@ -155,7 +155,7 @@ abstract class Command {
 
 					$message .= $keyParts[0];
 					if(!isset($keyParts[1])) {
-						$message .= str_repeat(" ", 4);
+						$message .= str_repeat(" ", 3);
 					}
 
 					$message .= "\t\t";
