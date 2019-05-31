@@ -67,9 +67,18 @@ class ArgumentList implements Iterator {
 					);
 				}
 				else {
-					$skipNextArgument = true;
 					$name = $arg;
-					$value = $arguments[$i + 1] ?? null;
+
+					$nextArgument = $arguments[$i + 1] ?? null;
+
+					if($nextArgument
+					&& strpos($nextArgument, "-") !== 0) {
+						$value = $arguments[$i + 1];
+						$skipNextArgument = true;
+					}
+					else {
+						$value = null;
+					}
 				}
 
 				if ($arg[1] === "-") {

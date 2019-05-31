@@ -303,6 +303,31 @@ class ArgumentListTest extends TestCase {
 		self::assertEquals($args[2], $value);
 	}
 
+	public function testGetValueForParameterForMultiple() {
+		$argumentList = new ArgumentList(
+			"test-script",
+			"test-command",
+			"--one",
+			"--two",
+			"--three",
+			"--four"
+		);
+
+		$param1 = self::createMock(Parameter::class);
+		$param1->method("getLongOption")->willReturn("one");
+		$param2 = self::createMock(Parameter::class);
+		$param2->method("getLongOption")->willReturn("two");
+		$param3 = self::createMock(Parameter::class);
+		$param3->method("getLongOption")->willReturn("three");
+		$param4 = self::createMock(Parameter::class);
+		$param4->method("getLongOption")->willReturn("four");
+
+		self::assertTrue($argumentList->contains($param1));
+		self::assertTrue($argumentList->contains($param2));
+		self::assertTrue($argumentList->contains($param3));
+		self::assertTrue($argumentList->contains($param4));
+	}
+
 	public function data_randomNamedArgs():array {
 		$dataSet = [];
 
