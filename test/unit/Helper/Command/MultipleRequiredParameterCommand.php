@@ -38,7 +38,7 @@ class MultipleRequiredParameterCommand extends Command {
 				true,
 				"framework",
 				"f",
-				"rinky-dink"
+				"The name of your framework"
 			),
 			new Parameter(
 				false,

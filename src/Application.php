@@ -27,9 +27,14 @@ class Application {
 		$this->arguments = $arguments;
 		$this->commands = $commands;
 
+		$script = null;
+		if($arguments) {
+			$script = $arguments->getScript();
+		}
+
 		$this->helpCommand = new HelpCommand(
 			$this->description,
-			$arguments->getScript(),
+			$script,
 			$this->commands
 		);
 		$this->commands []= $this->helpCommand;
@@ -112,6 +117,8 @@ class Application {
 	}
 
 	protected function findCommandByName(string $name):Command {
+
+//		var_dump($this->arguments);die();
 		foreach($this->commands as $command) {
 			if($command->getName() !== $name) {
 				continue;
