@@ -1,12 +1,4 @@
 {
-	"repositories": [
-		{
-			"type": "path",
-			"url": "/home/g105b/Code/PhpGt/*"
-		}
-	],
-	"minimum-stability": "dev",
-
 	"name": "phpgt/cli",
 	"description": "Command line interface builder.",
 	"keywords": [
@@ -19,7 +11,7 @@
 	"require": {
 		"php": ">=7.2",
 		"ext-json": "*",
-		"phpgt/daemon": "dev-master"
+		"phpgt/daemon": "1.*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "8.*"
