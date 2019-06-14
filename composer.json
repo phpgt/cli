@@ -5,6 +5,7 @@
 			"url": "/home/g105b/Code/PhpGt/*"
 		}
 	],
+	"minimum-stability": "dev",
 
 	"name": "phpgt/cli",
 	"description": "Command line interface builder.",

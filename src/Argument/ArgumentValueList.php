@@ -4,6 +4,8 @@ namespace Gt\Cli\Argument;
 use Iterator;
 
 class ArgumentValueList implements Iterator {
+	const DEFAULT_ARGUMENT_VALUE = "//\\DEFAULT ARGUMENT VALUE\\//";
+
 	/** @var ArgumentValue[] */
 	protected $valueList = [];
 	protected $argumentValueMap = [];
@@ -24,9 +26,14 @@ class ArgumentValueList implements Iterator {
 		$this->argumentValueMap[$key] = $valueObject;
 	}
 
-	public function get(string $key, string $default = null):ArgumentValue {
+	public function get(
+		string $key,
+		$default = self::DEFAULT_ARGUMENT_VALUE
+	):ArgumentValue {
+// $default is handled in this manner because we want to allow null to be a
+// valid value for the default.
 		if(!$this->contains($key)) {
-			if(!is_null($default)) {
+			if($default !== self::DEFAULT_ARGUMENT_VALUE) {
 				return new DefaultArgumentValue($default);
 			}
 

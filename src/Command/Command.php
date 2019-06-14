@@ -22,6 +22,8 @@ abstract class Command {
 		$this->output = $output;
 	}
 
+	abstract public function run(ArgumentValueList $arguments = null):void;
+
 	abstract public function getName():string;
 
 	abstract public function getDescription():string;
@@ -37,8 +39,6 @@ abstract class Command {
 
 	/** @return  Parameter[] */
 	abstract public function getOptionalParameterList():array;
-
-	abstract public function run(ArgumentValueList $arguments = null):void;
 
 	public function getUsage(bool $includeDocumentation = false):string {
 		$message = "";

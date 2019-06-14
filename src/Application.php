@@ -7,6 +7,7 @@ use Gt\Cli\Command\Command;
 use Gt\Cli\Command\CommandException;
 use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Command\InvalidCommandException;
+use Gt\Cli\Command\VersionCommand;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
 use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Argument\ArgumentList;
@@ -17,6 +18,7 @@ class Application {
 	protected $commands;
 	protected $stream;
 	protected $helpCommand;
+	protected $versionCommand;
 
 	public function __construct(
 		string $description,
@@ -32,7 +34,12 @@ class Application {
 			$arguments->getScript(),
 			$this->commands
 		);
+		$this->versionCommand = new VersionCommand(
+			$arguments->getScript()
+		);
+
 		$this->commands []= $this->helpCommand;
+		$this->commands []= $this->versionCommand;
 
 		$this->stream = new Stream(
 			"php://stdin",
@@ -40,6 +47,7 @@ class Application {
 			"php://stderr"
 		);
 		$this->helpCommand->setOutput($this->stream);
+		$this->versionCommand->setOutput($this->stream);
 	}
 
 	public function setStream($in, $out, $error) {
@@ -77,7 +85,9 @@ class Application {
 					return;
 
 				case "version":
-					$this->stream->writeLine($this->getVersion());
+					$versionArgs = new ArgumentValueList();
+					$versionArgs->set("command", $commandName);
+					$this->versionCommand->run($versionArgs);
 					return;
 				}
 			}
@@ -112,6 +122,8 @@ class Application {
 	}
 
 	protected function findCommandByName(string $name):Command {
+		$name = trim($name, "-");
+
 		foreach($this->commands as $command) {
 			if($command->getName() !== $name) {
 				continue;
@@ -121,48 +133,5 @@ class Application {
 		}
 
 		throw new InvalidCommandException($name);
-	}
-
-	protected function getVersion():string {
-		$version = "Version number not found";
-
-		$dir = __DIR__;
-		do {
-			$dir = dirname($dir);
-			$files = scandir($dir);
-		}
-		while(!in_array("vendor", $files) || strlen($dir) <= 4);
-
-		$installedJson = implode(DIRECTORY_SEPARATOR, [
-			$dir,
-			"vendor",
-			"composer",
-			"installed.json",
-		]);
-		if(!is_file($installedJson)) {
-			return $version;
-		}
-
-		$installed = json_decode(file_get_contents($installedJson));
-
-		$scriptName = $this->arguments->getScript();
-		$scriptName = pathinfo($scriptName, PATHINFO_FILENAME);
-
-		foreach($installed as $item) {
-			$binArray = $item->bin ?? [];
-			if(!empty($binArray))
-var_dump($binArray);
-			foreach($binArray as $bin) {
-				$bin = pathinfo($bin, PATHINFO_FILENAME);
-				if($bin === $scriptName) {
-					$version = $item->version;
-					break;
-				}
-			}
-		}
-
-		var_dump($version);die();
-
-		return $version;
 	}
 }
