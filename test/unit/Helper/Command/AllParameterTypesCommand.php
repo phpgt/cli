@@ -50,6 +50,7 @@ class AllParameterTypesCommand extends Command {
 				true,
 				"log",
 				"l",
+				"The path of your log file",
 				"LOG_PATH"
 			),
 			new Parameter(

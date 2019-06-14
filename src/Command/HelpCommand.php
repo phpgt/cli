@@ -18,7 +18,7 @@ class HelpCommand extends Command {
 	 */
 	public function __construct(
 		string $applicationDescription,
-		string $scriptName,
+		string $scriptName = null,
 		array $applicationCommandList = []
 	) {
 		$this->applicationDescription = $applicationDescription;
@@ -28,10 +28,13 @@ class HelpCommand extends Command {
 	}
 
 	public function run(ArgumentValueList $arguments = null): void {
-		$command = (string)$arguments->get(
-			"command",
-			self::ALL_COMMANDS
-		);
+		$command = null;
+		if($arguments) {
+			$command = (string)$arguments->get(
+				"command",
+				self::ALL_COMMANDS
+			);
+		}
 
 		if($command === self::ALL_COMMANDS) {
 			$output = $this->getHelpForAllCommands();
@@ -113,7 +116,7 @@ class HelpCommand extends Command {
 		return $output;
 	}
 
-	protected function getHelpForCommand(string $commandName):string {
+	protected function getHelpForCommand(string $commandName = null):string {
 		$output = "";
 
 		$command = null;

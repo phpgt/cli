@@ -235,7 +235,7 @@ class CommandTest extends ArgumentMockTestCase {
 	public function testGetUsageMultipleRequiredParameter() {
 		$command = new MultipleRequiredParameterCommand();
 		self::assertEquals(
-			"Usage: multiple-required-parameter-command id name --framework|-f rinky-dink --example",
+			"Usage: multiple-required-parameter-command id name --framework|-f FRAMEWORK --example",
 			$command->getUsage()
 		);
 	}
@@ -243,7 +243,7 @@ class CommandTest extends ArgumentMockTestCase {
 	public function testGetUsageComboRequiredOptionalParameter() {
 		$command = new ComboRequiredOptionalParameterCommand();
 		self::assertEquals(
-			"Usage: combo-required-optional-parameter-command id [name] --type|-t TYPE_VALUE [--verbose|-v]",
+			"Usage: combo-required-optional-parameter-command id [name] --type|-t TYPE [--verbose|-v]",
 			$command->getUsage()
 		);
 	}
@@ -251,7 +251,7 @@ class CommandTest extends ArgumentMockTestCase {
 	public function testGetUsageAllParameterTypes() {
 		$command = new AllParameterTypesCommand();
 		self::assertEquals(
-			"Usage: all-parameter-types-command id [name] --type|-t TYPE_VALUE [--log|-l LOG_PATH] [--verbose|-v]",
+			"Usage: all-parameter-types-command id [name] --type|-t TYPE [--log|-l LOG_PATH] [--verbose|-v]",
 			$command->getUsage()
 		);
 	}

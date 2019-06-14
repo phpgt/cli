@@ -29,9 +29,14 @@ class Application {
 		$this->arguments = $arguments;
 		$this->commands = $commands;
 
+		$script = null;
+		if($arguments) {
+			$script = $arguments->getScript();
+		}
+
 		$this->helpCommand = new HelpCommand(
 			$this->description,
-			$arguments->getScript(),
+			$script,
 			$this->commands
 		);
 		$this->versionCommand = new VersionCommand(

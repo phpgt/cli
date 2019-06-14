@@ -38,7 +38,8 @@ class ComboRequiredOptionalParameterCommand extends Command {
 			new Parameter(
 				true,
 				"type",
-				"t"
+				"t",
+				"What type of thing you are using"
 			),
 		];
 	}
