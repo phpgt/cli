@@ -39,9 +39,7 @@ class Application {
 			$script,
 			$this->commands
 		);
-		$this->versionCommand = new VersionCommand(
-			$arguments->getScript()
-		);
+		$this->versionCommand = new VersionCommand($script ?? "*");
 
 		$this->commands []= $this->helpCommand;
 		$this->commands []= $this->versionCommand;

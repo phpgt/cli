@@ -11,7 +11,7 @@
 	"require": {
 		"php": ">=7.2",
 		"ext-json": "*",
-		"phpgt/daemon": "1.*"
+		"phpgt/daemon": "*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "8.*"
