@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "phpgt/daemon",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/Daemon.git",
-                "reference": "39765ffaf95c1cfd7c03dc00eaa4d4ae0fb7a3ed"
+                "reference": "c061e67dce1e275e1fa3a7d4e6a19d7d989def4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/Daemon/zipball/39765ffaf95c1cfd7c03dc00eaa4d4ae0fb7a3ed",
-                "reference": "39765ffaf95c1cfd7c03dc00eaa4d4ae0fb7a3ed",
+                "url": "https://api.github.com/repos/PhpGt/Daemon/zipball/c061e67dce1e275e1fa3a7d4e6a19d7d989def4d",
+                "reference": "c061e67dce1e275e1fa3a7d4e6a19d7d989def4d",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Background script execution with cross-platform compatible streaming.",
-            "time": "2019-06-14T13:38:28+00:00"
+            "time": "2019-12-23T23:53:00+00:00"
         }
     ],
     "packages-dev": [
