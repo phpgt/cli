@@ -9,7 +9,7 @@
 	],
 
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"ext-json": "*",
 		"phpgt/daemon": "*"
 	},
@@ -33,7 +33,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Gt\\Cli\\Test\\": "./test/unit"
+			"Gt\\Cli\\Test\\": "./test/phpunit"
 		}
 	}
 }
