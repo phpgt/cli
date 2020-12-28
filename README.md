@@ -5,7 +5,7 @@ Create multi-command terminal application with parameter requirements that are s
 
 ***
 
-<a href="https://circleci.com/gh/PhpGt/Cli" target="_blank">
+<a href="https://github.com/PhpGt/Cli/actions" target="_blank">
 	<img src="https://badge.status.php.gt/cli-build.svg" alt="Build status" />
 </a>
 <a href="https://scrutinizer-ci.com/g/PhpGt/Cli" target="_blank">

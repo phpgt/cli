@@ -73,7 +73,10 @@ class StreamTest extends TestCase {
 		$out = $stream->getOutStream();
 		$stream->writeLine("test");
 		$out->rewind();
-		self::assertRegExp("/^test\r?\n$/", $out->fread(1024));
+		self::assertMatchesRegularExpression(
+			"/^test\r?\n$/",
+			$out->fread(1024)
+		);
 	}
 
 	public function testWriteToError() {
