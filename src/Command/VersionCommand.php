@@ -6,17 +6,18 @@ use Gt\Cli\Parameter\NamedParameter;
 use Gt\Cli\Parameter\Parameter;
 
 class VersionCommand extends Command {
-	protected $script;
+	protected string $script;
 
 	public function __construct(string $script) {
 		$this->script = $script;
 	}
 
 	public function run(ArgumentValueList $arguments = null):void {
-		$this->writeLine($this->getVersion($arguments->get(
-			"command",
-			null
-		)));
+		$this->writeLine(
+			$this->getVersion($arguments->get(
+				"command"
+			)
+		));
 	}
 
 	public function getName():string {

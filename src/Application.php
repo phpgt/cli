@@ -2,23 +2,21 @@
 namespace Gt\Cli;
 
 use Gt\Cli\Argument\ArgumentValueList;
-use Gt\Cli\Argument\NotEnoughArgumentsException;
 use Gt\Cli\Command\Command;
-use Gt\Cli\Command\CommandException;
 use Gt\Cli\Command\HelpCommand;
 use Gt\Cli\Command\InvalidCommandException;
 use Gt\Cli\Command\VersionCommand;
 use Gt\Cli\Parameter\MissingRequiredParameterException;
-use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 use Gt\Cli\Argument\ArgumentList;
 
 class Application {
-	protected $description;
-	protected $arguments;
-	protected $commands;
-	protected $stream;
-	protected $helpCommand;
-	protected $versionCommand;
+	protected string $description;
+	protected ?ArgumentList $arguments;
+	/** @var Command[]  */
+	protected array $commands;
+	protected Stream $stream;
+	protected HelpCommand $helpCommand;
+	protected VersionCommand $versionCommand;
 
 	public function __construct(
 		string $description,
@@ -53,7 +51,7 @@ class Application {
 		$this->versionCommand->setOutput($this->stream);
 	}
 
-	public function setStream($in, $out, $error) {
+	public function setStream(string $in, string $out, string $error):void {
 		$this->stream->setStream($in, $out, $error);
 	}
 

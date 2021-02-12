@@ -35,7 +35,7 @@ class Stream {
 		$this->setStream($in, $out, $error);
 	}
 
-	public function setStream(string $in, string $out, string $error) {
+	public function setStream(string $in, string $out, string $error):void {
 		$this->in = new SplFileObject(
 			$in,
 			"r"

@@ -3,13 +3,15 @@ namespace Gt\Cli\Argument;
 
 use Iterator;
 
+/** @implements Iterator<int, ArgumentValue> */
 class ArgumentValueList implements Iterator {
 	const DEFAULT_ARGUMENT_VALUE = "//\\DEFAULT ARGUMENT VALUE\\//";
 
 	/** @var ArgumentValue[] */
-	protected $valueList = [];
-	protected $argumentValueMap = [];
-	protected $iteratorIndex;
+	protected array $valueList = [];
+	/** @var array<string, ArgumentValue> */
+	protected array $argumentValueMap = [];
+	protected int $iteratorIndex;
 
 	public function set(string $key, string $value = null):void {
 		if($this->contains($key)) {
@@ -28,7 +30,7 @@ class ArgumentValueList implements Iterator {
 
 	public function get(
 		string $key,
-		$default = self::DEFAULT_ARGUMENT_VALUE
+		string $default = self::DEFAULT_ARGUMENT_VALUE
 	):ArgumentValue {
 // $default is handled in this manner because we want to allow null to be a
 // valid value for the default.
@@ -48,12 +50,12 @@ class ArgumentValueList implements Iterator {
 	}
 
 	/** @link https://php.net/manual/en/iterator.rewind.php */
-	public function rewind() {
+	public function rewind():void {
 		$this->iteratorIndex = 0;
 	}
 
 	/** @link https://php.net/manual/en/iterator.key.php */
-	public function key() {
+	public function key():int {
 		return $this->iteratorIndex;
 	}
 
@@ -65,7 +67,7 @@ class ArgumentValueList implements Iterator {
 	}
 
 	/** @link https://php.net/manual/en/iterator.current.php */
-	public function current() {
+	public function current():?ArgumentValue {
 		if(!$this->iteratorIndex) {
 			$this->rewind();
 		}
@@ -73,11 +75,11 @@ class ArgumentValueList implements Iterator {
 	}
 
 	/** @link https://php.net/manual/en/iterator.next.php */
-	public function next() {
+	public function next():void {
 		$this->iteratorIndex++;
 	}
 
-	public function first() {
+	public function first():?ArgumentValue {
 		return $this->valueList[0] ?? null;
 	}
 }

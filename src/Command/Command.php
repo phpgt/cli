@@ -15,10 +15,9 @@ use Gt\Cli\Parameter\UserParameter;
 use Gt\Cli\Stream;
 
 abstract class Command {
-	/** @var Stream */
-	protected $output;
+	protected ?Stream $output;
 
-	public function setOutput(Stream $output = null) {
+	public function setOutput(Stream $output = null):void {
 		$this->output = $output;
 	}
 
@@ -231,7 +230,7 @@ abstract class Command {
 				continue;
 			}
 			elseif($argument instanceof NamedArgument) {
-				/** @var NamedParameter $parameter */
+				/** @var NamedParameter|null $parameter */
 				$parameter = $namedParameterList[
 					$namedParameterIndex
 				] ?? null;

@@ -8,10 +8,10 @@ use Gt\Cli\Parameter\Parameter;
 class HelpCommand extends Command {
 	const ALL_COMMANDS = "*";
 
-	protected $applicationDescription;
+	protected string $applicationDescription;
 	/** @var Command[] */
-	protected $applicationCommandList;
-	protected $scriptName;
+	protected array $applicationCommandList;
+	protected ?string $scriptName;
 
 	/**
 	 * @param Command[] $applicationCommandList

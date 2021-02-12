@@ -2,7 +2,7 @@
 namespace Gt\Cli\Argument;
 
 class NamedArgument extends Argument {
-	public function __construct($value) {
+	public function __construct(string $value) {
 		parent::__construct("", $value);
 	}
 
