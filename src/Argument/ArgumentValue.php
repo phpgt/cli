@@ -2,9 +2,10 @@
 namespace Gt\Cli\Argument;
 
 class ArgumentValue {
-	protected $key;
-	protected $valueList;
-	protected $queueIndex;
+	protected string $key;
+	/** @var string[] */
+	protected array $valueList;
+	protected int $queueIndex;
 
 	public function __construct(string $key) {
 		$this->key = $key;
@@ -17,7 +18,7 @@ class ArgumentValue {
 	}
 
 	public function push(string $value = null):void {
-		$this->valueList []= $value;
+		array_push($this->valueList, $value);
 	}
 
 	public function getKey():string {
@@ -30,6 +31,7 @@ class ArgumentValue {
 		return $value;
 	}
 
+	/** @return string[] */
 	public function getAll():array {
 		return $this->valueList;
 	}

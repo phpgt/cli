@@ -3,8 +3,8 @@ namespace Gt\Cli\Argument;
 
 abstract class Argument {
 	const USER_DATA = "__user-data__";
-	protected $key;
-	protected $value;
+	protected string $key;
+	protected ?string $value;
 
 	public function __construct(string $rawKey, string $value = null) {
 		$this->key = $this->processRawKey($rawKey);

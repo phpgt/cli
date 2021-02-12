@@ -2,11 +2,11 @@
 namespace Gt\Cli\Parameter;
 
 class Parameter {
-	protected $takesValue;
-	protected $longOption;
-	protected $shortOption;
-	protected $documentation;
-	protected $exampleValue;
+	protected bool $takesValue;
+	protected string $longOption;
+	protected ?string $shortOption;
+	protected ?string $documentation;
+	protected ?string $exampleValue;
 
 	public function __construct(
 		bool $takesValue,

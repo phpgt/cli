@@ -11,7 +11,8 @@ use Gt\Cli\Parameter\MissingRequiredParameterValueException;
 class ErrorCode {
 	const DEFAULT_CODE = 1000;
 
-	protected static $classList = [
+	/** @var string[] */
+	protected static array $classList = [
 		NotEnoughArgumentsException::class,
 		CommandException::class,
 		InvalidCommandException::class,
@@ -19,6 +20,7 @@ class ErrorCode {
 		MissingRequiredParameterException::class,
 	];
 
+	/** @param string|Exception $exception */
 	public static function get($exception):int {
 		if($exception instanceof Exception) {
 			$exception = get_class($exception);

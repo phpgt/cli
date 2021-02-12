@@ -4,13 +4,14 @@ namespace Gt\Cli\Argument;
 use Gt\Cli\Parameter\Parameter;
 use Iterator;
 
+/** @implements Iterator<int, Argument> */
 class ArgumentList implements Iterator {
 	const DEFAULT_COMMAND = "help";
 
-	protected $script;
+	protected string $script;
 	/** @var Argument[] */
-	protected $argumentList = [];
-	protected $iteratorIndex;
+	protected array $argumentList = [];
+	protected int $iteratorIndex;
 
 	public function __construct(string $script, string...$arguments) {
 		$this->script = $script;
@@ -25,18 +26,20 @@ class ArgumentList implements Iterator {
 		return $this->argumentList[0]->getValue();
 	}
 
+	/** @param string[] $arguments */
 	protected function buildArgumentList(array $arguments):void {
 		$commandArgument = array_shift($arguments);
 		if($commandArgument) {
-			$this->argumentList []= new CommandArgument(
-				$commandArgument
+			array_push(
+				$this->argumentList,
+				new CommandArgument($commandArgument)
 			);
 		}
 		else {
 			$defaultCommandArgument = new CommandArgument(
 				self::DEFAULT_COMMAND
 			);
-			$this->argumentList []= $defaultCommandArgument;
+			array_push($this->argumentList, $defaultCommandArgument);
 		}
 
 		$skipNextArgument = false;
@@ -82,19 +85,27 @@ class ArgumentList implements Iterator {
 				}
 
 				if ($arg[1] === "-") {
-					$this->argumentList []= new LongOptionArgument(
-						$name,
-						$value
+					array_push(
+						$this->argumentList,
+						new LongOptionArgument(
+							$name,
+							$value
+						)
 					);
 				}
 				else {
-					$this->argumentList []= new ShortOptionArgument(
-						$arg,
-						$value
+					array_push($this->argumentList,
+						new ShortOptionArgument(
+							$arg,
+							$value
+						)
 					);
 				}
 			} else {
-				$this->argumentList []= new NamedArgument($arg);
+				array_push(
+					$this->argumentList,
+					new NamedArgument($arg)
+				);
 			}
 		}
 	}
