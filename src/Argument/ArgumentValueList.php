@@ -5,8 +5,6 @@ use Iterator;
 
 /** @implements Iterator<int, ArgumentValue> */
 class ArgumentValueList implements Iterator {
-	const DEFAULT_ARGUMENT_VALUE = "//\\DEFAULT ARGUMENT VALUE\\//";
-
 	/** @var ArgumentValue[] */
 	protected array $valueList = [];
 	/** @var array<string, ArgumentValue> */
@@ -30,12 +28,10 @@ class ArgumentValueList implements Iterator {
 
 	public function get(
 		string $key,
-		string $default = self::DEFAULT_ARGUMENT_VALUE
+		string $default = null
 	):ArgumentValue {
-// $default is handled in this manner because we want to allow null to be a
-// valid value for the default.
 		if(!$this->contains($key)) {
-			if($default !== self::DEFAULT_ARGUMENT_VALUE) {
+			if(!is_null($default)) {
 				return new DefaultArgumentValue($default);
 			}
 
