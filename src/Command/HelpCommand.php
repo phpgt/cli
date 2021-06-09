@@ -13,9 +13,7 @@ class HelpCommand extends Command {
 	protected array $applicationCommandList;
 	protected ?string $scriptName;
 
-	/**
-	 * @param Command[] $applicationCommandList
-	 */
+	/** @param Command[] $applicationCommandList */
 	public function __construct(
 		string $applicationDescription,
 		string $scriptName = null,
@@ -27,7 +25,7 @@ class HelpCommand extends Command {
 		$this->applicationCommandList []= $this;
 	}
 
-	public function run(ArgumentValueList $arguments = null): void {
+	public function run(ArgumentValueList $arguments = null):void {
 		$command = null;
 		if($arguments) {
 			$command = (string)$arguments->get(
@@ -73,7 +71,14 @@ class HelpCommand extends Command {
 
 	/** @return  Parameter[] */
 	public function getOptionalParameterList():array {
-		return [];
+		return [
+			new Parameter(
+				false,
+				"version",
+				"v",
+				"Return the version number of the current command"
+			)
+		];
 	}
 
 	protected function getHelpForAllCommands():string {

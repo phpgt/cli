@@ -40,7 +40,7 @@ class CommandTest extends ArgumentMockTestCase {
 		$command->run($args);
 		self::assertEmpty( $buffer[Stream::OUT]);
 
-		$command->setOutput($stream);
+		$command->setStream($stream);
 		$command->run($args);
 		self::assertNotEmpty($buffer[Stream::OUT]);
 		self::assertEmpty($buffer[Stream::ERROR]);

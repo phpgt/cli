@@ -28,8 +28,9 @@ class ArgumentList implements Iterator {
 
 	/** @param string[] $arguments */
 	protected function buildArgumentList(array $arguments):void {
-		$commandArgument = array_shift($arguments);
-		if($commandArgument) {
+		if(isset($arguments[0])
+		&& $arguments[0][0] !== "-") {
+			$commandArgument = array_shift($arguments);
 			array_push(
 				$this->argumentList,
 				new CommandArgument($commandArgument)
