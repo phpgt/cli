@@ -8,14 +8,10 @@ class Stream {
 	const OUT = "out";
 	const ERROR = "error";
 
-	/** @var SplFileObject */
-	protected $error;
-	/** @var SplFileObject */
-	protected $out;
-	/** @var SplFileObject */
-	protected $in;
-	/** @var SplFileObject */
-	protected $currentStream;
+	protected SplFileObject $error;
+	protected SplFileObject $out;
+	protected SplFileObject $in;
+	protected SplFileObject $currentStream;
 
 	public function __construct(
 		string $in = null,
@@ -62,23 +58,30 @@ class Stream {
 		return $this->error;
 	}
 
+	public function readLine(string $streamName = self::IN):string {
+		$stream = $this->getNamedStream($streamName);
+		$buffer = "";
+
+		while(!strstr($buffer, "\n")) {
+			$buffer .= $stream->fread(128);
+			usleep(1_000);
+		}
+
+		return $buffer;
+	}
+
 	public function write(
 		string $message,
 		string $streamName = self::OUT
 	):void {
-		$this->getNamedStream(
-			$streamName
-		)->fwrite($message);
+		$this->getNamedStream($streamName)->fwrite($message);
 	}
 
 	public function writeLine(
 		string $message = "",
 		string $streamName = self::OUT
 	):void {
-		$this->write(
-			$message . PHP_EOL,
-			$streamName
-		);
+		$this->write($message . PHP_EOL, $streamName);
 	}
 
 	protected function getNamedStream(string $streamName):SplFileObject {

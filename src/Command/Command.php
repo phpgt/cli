@@ -15,10 +15,10 @@ use Gt\Cli\Parameter\UserParameter;
 use Gt\Cli\Stream;
 
 abstract class Command {
-	protected ?Stream $output;
+	protected ?Stream $stream;
 
-	public function setOutput(Stream $output = null):void {
-		$this->output = $output;
+	public function setStream(Stream $stream = null):void {
+		$this->stream = $stream;
 	}
 
 	abstract public function run(ArgumentValueList $arguments = null):void;
@@ -284,11 +284,11 @@ abstract class Command {
 		string $message,
 		string $streamName = Stream::OUT
 	):void {
-		if(!isset($this->output) || is_null($this->output)) {
+		if(!isset($this->stream) || is_null($this->stream)) {
 			return;
 		}
 
-		$this->output->write($message, $streamName);
+		$this->stream->write($message, $streamName);
 	}
 
 	protected function writeLine(
@@ -296,5 +296,16 @@ abstract class Command {
 		string $streamName = Stream::OUT
 	):void {
 		$this->write($message . PHP_EOL, $streamName);
+	}
+
+	protected function readLine(string $default = null):string {
+		$prefix = "";
+
+		if(!is_null($default)) {
+			$prefix = "[$default]";
+		}
+
+		$this->write("$prefix > ");
+		return trim($this->stream->readLine()) ?: $default;
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Gt\Cli;
 
+use Composer\InstalledVersions;
 use Gt\Cli\Argument\ArgumentValueList;
 use Gt\Cli\Command\Command;
 use Gt\Cli\Command\HelpCommand;
@@ -37,9 +38,9 @@ class Application {
 			$script,
 			$this->commands
 		);
-		$this->versionCommand = new VersionCommand($script ?? "*");
+		$this->versionCommand = new VersionCommand();
 
-		$this->commands []= $this->helpCommand;
+		array_push($this->commands, $this->helpCommand);
 		$this->commands []= $this->versionCommand;
 
 		$this->stream = new Stream(
@@ -47,8 +48,8 @@ class Application {
 			"php://stdout",
 			"php://stderr"
 		);
-		$this->helpCommand->setOutput($this->stream);
-		$this->versionCommand->setOutput($this->stream);
+		$this->helpCommand->setStream($this->stream);
+		$this->versionCommand->setStream($this->stream);
 	}
 
 	public function setStream(string $in, string $out, string $error):void {
@@ -70,7 +71,7 @@ class Application {
 		try {
 			$commandName = $this->arguments->getCommandName();
 			$command = $this->findCommandByName($commandName);
-			$command->setOutput($this->stream);
+			$command->setStream($this->stream);
 
 			$argumentValueList = $command->getArgumentValueList(
 				$this->arguments
