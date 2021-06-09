@@ -38,9 +38,7 @@ class Application {
 			$script,
 			$this->commands
 		);
-		$this->versionCommand = new VersionCommand(
-			InstalledVersions::getRootPackage()["name"]
-		);
+		$this->versionCommand = new VersionCommand();
 
 		array_push($this->commands, $this->helpCommand);
 		$this->commands []= $this->versionCommand;

@@ -7,11 +7,6 @@ use Gt\Cli\Parameter\NamedParameter;
 use Gt\Cli\Parameter\Parameter;
 
 class VersionCommand extends Command {
-	public function __construct(
-		protected string $composerPackage
-	) {
-	}
-
 	public function run(ArgumentValueList $arguments = null):void {
 		$this->writeLine(
 			$this->getVersion($arguments->get(
@@ -49,6 +44,7 @@ class VersionCommand extends Command {
 	}
 
 	protected function getVersion(string $command = null):string {
-		return InstalledVersions::getVersion($this->composerPackage);
+		$package = InstalledVersions::getRootPackage()["name"];
+		return InstalledVersions::getVersion($package);
 	}
 }
