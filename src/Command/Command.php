@@ -306,6 +306,6 @@ abstract class Command {
 		}
 
 		$this->write("$prefix > ");
-		return trim($this->stream->readLine()) ?: $default;
+		return trim($this->stream->readLine()) ?: $default ?? "";
 	}
 }
