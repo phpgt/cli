@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50dcbcf5478c9a26e9c63501a4ef137e",
+    "content-hash": "08eee31fada507bfe7e1762adb2edda6",
     "packages": [
         {
             "name": "phpgt/daemon",
@@ -530,16 +530,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.84",
+            "version": "0.12.89",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "9c43f15da8798c8f30a4b099e6a94530a558cfd5"
+                "reference": "54c0f5a6c30511b77128d58b6369f718df250542"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9c43f15da8798c8f30a4b099e6a94530a558cfd5",
-                "reference": "9c43f15da8798c8f30a4b099e6a94530a558cfd5",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/54c0f5a6c30511b77128d58b6369f718df250542",
+                "reference": "54c0f5a6c30511b77128d58b6369f718df250542",
                 "shasum": ""
             },
             "require": {
@@ -574,6 +574,10 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                },
+                {
                     "url": "https://www.patreon.com/phpstan",
                     "type": "patreon"
                 },
@@ -582,7 +586,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-19T17:10:54+00:00"
+            "time": "2021-06-09T20:23:49+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2008,12 +2012,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -2059,8 +2063,9 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4",
-        "ext-json": "*"
+        "php": ">=8.0",
+        "ext-json": "*",
+        "ext-readline": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
