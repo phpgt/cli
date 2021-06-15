@@ -37,5 +37,12 @@
 		"psr-4": {
 			"Gt\\Cli\\Test\\": "./test/phpunit"
 		}
-	}
+	},
+	
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/PhpGt"
+		}
+	]
 }
